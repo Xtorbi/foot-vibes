@@ -1,12 +1,5 @@
 import { useState, useRef } from 'react';
-
-// Icônes de position
-const POSITION_ICONS = {
-  'Gardien': '🧤',
-  'Defenseur': '🛡️',
-  'Milieu': '',
-  'Attaquant': '⚡',
-};
+import { CLUB_LOGOS } from '../config/clubs';
 
 // Placeholder SVG en base64
 const PLACEHOLDER_PHOTO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='35' r='20' fill='%234a5568'/%3E%3Cellipse cx='50' cy='85' rx='30' ry='25' fill='%234a5568'/%3E%3C/svg%3E";
@@ -21,7 +14,7 @@ function PlayerCard({ player, animate = false }) {
   const nameParts = player.name.split(' ');
   const firstName = nameParts.slice(0, -1).join(' ') || '';
   const lastName = nameParts[nameParts.length - 1] || player.name;
-  const positionIcon = POSITION_ICONS[player.position] || '⚽';
+  const clubLogo = CLUB_LOGOS[player.club];
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
@@ -49,10 +42,9 @@ function PlayerCard({ player, animate = false }) {
           transformStyle: 'preserve-3d',
         }}
       >
-        {/* Badge position avec icône */}
+        {/* Badge position */}
         <div className="flex justify-center pt-3 pb-1">
-          <span className="px-3 py-0.5 bg-fv-navy text-white text-[10px] font-semibold tracking-wider rounded-full uppercase flex items-center gap-1">
-            <span>{positionIcon}</span>
+          <span className="px-3 py-0.5 bg-fv-navy text-white text-[10px] font-semibold tracking-wider rounded-full uppercase">
             {player.position}
           </span>
         </div>
@@ -79,7 +71,10 @@ function PlayerCard({ player, animate = false }) {
         </div>
 
         {/* Club */}
-        <div className="text-center py-2 border-t border-fv-navy">
+        <div className="flex justify-center items-center gap-2 py-2 border-t border-fv-navy">
+          {clubLogo && (
+            <img src={clubLogo} alt={player.club} className="w-4 h-4 object-contain" />
+          )}
           <p className="text-white/50 text-[10px] tracking-widest uppercase">{player.club}</p>
         </div>
 

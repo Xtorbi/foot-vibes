@@ -35,9 +35,12 @@ function Header() {
         {isVotePage ? (
           <Link
             to="/classement"
-            className="text-white/60 hover:text-fv-green font-medium transition-colors"
+            className="bg-fv-green text-fv-navy font-bold
+                       px-5 py-2 rounded-full
+                       hover:bg-fv-green-dark hover:scale-105
+                       active:scale-95 transition-all duration-200"
           >
-            Classement
+            CLASSEMENT
           </Link>
         ) : (
           <Link
