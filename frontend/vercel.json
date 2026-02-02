@@ -3,6 +3,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://foot-vibes-api.onrender.com/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
