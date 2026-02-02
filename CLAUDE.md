@@ -1,22 +1,47 @@
 # CLAUDE.md - Foot Vibes
 
-**Derniere mise a jour** : 2 fevrier 2026 (soir)
+**Derniere mise a jour** : 2 fevrier 2026 (nuit)
 
 ---
 
 ## Etat general du projet
 
-**Statut** : MVP fonctionnel - PRET POUR DEPLOIEMENT
+**Statut** : MVP DEPLOYE EN PRODUCTION
 
 Le projet Foot Vibes est une application web de vote emotionnel pour classer les joueurs de Ligue 1. Les utilisateurs votent sur des joueurs (pouce haut / neutre / pouce bas) pour creer un classement communautaire base sur le ressenti des fans.
 
-### Verification du 2 fevrier 2026 (soir)
+### URLs de production
 
-- **Backend** : Demarre OK sur http://localhost:3001
-- **Frontend** : Demarre OK sur http://localhost:5180
-- **Navigation** : Home -> Vote -> Classement fonctionnels
-- **Vote** : Interface complete avec boutons et raccourcis clavier
-- **Donnees** : 481 joueurs affiches correctement avec photos
+- **Frontend** : https://frontend-xtorbis-projects.vercel.app
+- **Backend API** : https://foot-vibes-api.onrender.com
+- **GitHub** : https://github.com/Xtorbi/foot-vibes
+
+### Session du 2 fevrier 2026 (soir)
+
+**Deploiement effectue** :
+- Backend deploye sur Render (region Frankfurt)
+- Frontend deploye sur Vercel
+- SPA routing configure (vercel.json)
+- API health check OK
+
+**Modifications UI** :
+- Bouton downvote rouge plein
+- Retrait emojis devant les postes
+- Logo club affiche sur la carte joueur
+- Logo club dans le header en mode club
+- Bouton CLASSEMENT homogene avec VOTER
+- Alias clubs BDD -> logos (LOSC Lille, Paris Saint-Germain, etc.)
+- Fix logo Paris FC (ID 10004)
+
+**Tests design fond anime** :
+- Style "Aurora" (gradient bleu/violet anime) : RETENU - subtil et agreable
+- Style "Mesh" (bulles flottantes) : teste, pas retenu
+- Style "Grid" (grille + grain) : teste, pas retenu
+- Style "Aurora Intense" (couleurs vives + glow) : teste, trop charge
+
+**A explorer plus tard** :
+- Autres styles de fond (waves, particles, spotlight)
+- Trouver le bon equilibre entre sobre et wahou
 
 ---
 
@@ -103,10 +128,10 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 - [x] **Verifier les donnees en BDD** : 481 joueurs importes (2 fev 2026)
 - [x] **Tester l'app de bout en bout** : API testee OK, frontend sur port 5180
 - [x] **Test manuel complet** : Navigation, vote, classement OK (2 fev soir)
-- [ ] **Deploiement** :
-  - [ ] Frontend sur Vercel
-  - [ ] Backend sur Railway ou Render
-  - [ ] Configuration domaine footvibes.fr
+- [x] **Deploiement** :
+  - [x] Frontend sur Vercel : https://frontend-xtorbis-projects.vercel.app
+  - [x] Backend sur Render : https://foot-vibes-api.onrender.com
+  - [ ] Configuration domaine footvibes.fr (optionnel)
 
 ### Priorite moyenne (polish v1.1)
 
@@ -289,3 +314,6 @@ node scripts/importTransfermarkt.js
 | 2 fev 2026 | Mise a jour ClubGrid.jsx : retrait relegues, ajout promus |
 | 2 fev 2026 | Tests API OK, frontend sur port 5180 (5173 occupe par MPG) |
 | 2 fev 2026 (soir) | Test complet MVP : navigation, vote, classement OK - pret pour deploiement |
+| 2 fev 2026 (soir) | Deploiement : Backend sur Render, Frontend sur Vercel |
+| 2 fev 2026 (soir) | UI : bouton downvote rouge, logos clubs, boutons homogenes |
+| 2 fev 2026 (soir) | Design : style Aurora retenu (gradient anime subtil) |

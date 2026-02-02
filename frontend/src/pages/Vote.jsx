@@ -77,7 +77,7 @@ function Vote() {
   }, [player]);
 
   // Styles de fond disponibles: 'bg-fv-navy', 'bg-aurora', 'bg-mesh', 'bg-grid', 'bg-aurora-intense'
-  const bgStyle = 'bg-aurora-intense';
+  const bgStyle = 'bg-aurora';
 
   return (
     <main className={`min-h-screen ${bgStyle} px-4 py-4`}>

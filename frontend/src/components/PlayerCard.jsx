@@ -29,7 +29,7 @@ function PlayerCard({ player, animate = false }) {
   };
 
   return (
-    <div className={`w-full max-w-[300px] mx-auto card-glow ${animate ? 'animate-fade-in-up' : ''}`}>
+    <div className={`w-full max-w-[300px] mx-auto ${animate ? 'animate-fade-in-up' : ''}`}>
       {/* Card principale avec effet 3D */}
       <div
         ref={cardRef}
