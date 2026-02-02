@@ -21,9 +21,9 @@ function VoteButtons({ onVote, disabled }) {
         onClick={() => handleClick('down')}
         disabled={disabled}
         className={`w-14 h-14 ${baseClasses}
-                   bg-white/10 border-2 border-white/20 text-white/70
-                   hover:bg-red-500/20 hover:border-red-400 hover:text-red-400
-                   ${clickedButton === 'down' ? 'animate-vote-bounce bg-red-500/30 border-red-400 text-red-400' : ''}`}
+                   bg-red-500 text-white
+                   hover:bg-red-600
+                   ${clickedButton === 'down' ? 'animate-vote-bounce bg-red-600' : ''}`}
         aria-label="Je n'aime pas"
       >
         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">

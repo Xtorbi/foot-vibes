@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 const POSITION_ICONS = {
   'Gardien': '🧤',
   'Defenseur': '🛡️',
-  'Milieu': '⚙️',
+  'Milieu': '',
   'Attaquant': '⚡',
 };
 
