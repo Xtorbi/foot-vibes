@@ -18,7 +18,7 @@ const CLUBS = [
   { id: 'auxerre', name: 'Auxerre', tmId: 290 },
   { id: 'angers', name: 'Angers', tmId: 1420 },
   { id: 'lorient', name: 'Lorient', tmId: 1158 },
-  { id: 'parisfc', name: 'Paris FC', tmId: 1032 },
+  { id: 'parisfc', name: 'Paris FC', tmId: 10004 },
   { id: 'metz', name: 'Metz', tmId: 347 },
 ];
 
