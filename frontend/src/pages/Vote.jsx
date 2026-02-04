@@ -27,11 +27,11 @@ function Vote() {
   const [transitioning, setTransitioning] = useState(false); // Transition en cours
   const [error, setError] = useState(null);
 
-  const loadPlayer = useCallback(async () => {
+  const loadPlayer = useCallback(async (excludeIds = votedIds) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await fetchRandomPlayer(mode, votedIds);
+      const data = await fetchRandomPlayer(mode, excludeIds);
       setPlayer(data);
     } catch (err) {
       console.error('Erreur chargement joueur:', err);
@@ -39,11 +39,12 @@ function Vote() {
     } finally {
       setLoading(false);
     }
-  }, [mode, votedIds]);
+  }, [mode]);
 
+  // Charger le premier joueur au montage ou changement de mode
   useEffect(() => {
-    loadPlayer();
-  }, [loadPlayer]);
+    loadPlayer([]);
+  }, [mode]);
 
   const handleVote = async (voteType) => {
     if (!player || exitDirection || transitioning) return;
@@ -61,7 +62,6 @@ function Vote() {
       const result = await submitVote(player.id, voteType, mode);
       const newCount = voteCount + 1;
       incrementVoteCount();
-      setVotedIds(prev => [...prev, player.id]);
 
       // Vérifier si on atteint un milestone
       if (MILESTONES[newCount]) {
@@ -74,12 +74,14 @@ function Vote() {
       }
 
       // Attendre la fin de l'animation avant de charger le suivant
+      const newVotedIds = [...votedIds, player.id];
       setTimeout(() => {
         setTransitioning(true);
         setExitDirection(null);
         setVoteFlash(null);
         setPlayer(null);
-        loadPlayer().then(() => setTransitioning(false));
+        setVotedIds(newVotedIds);
+        loadPlayer(newVotedIds).then(() => setTransitioning(false));
       }, 400); // 150ms flash + 250ms exit
     } catch (err) {
       console.error('Erreur vote:', err);
