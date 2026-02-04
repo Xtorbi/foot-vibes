@@ -21,10 +21,10 @@
 /* Effet shine au hover (style Code Wiki) */
 @keyframes shine {
   0% {
-    background-position: -200% center;
+    left: -50%;
   }
   100% {
-    background-position: 200% center;
+    left: 150%;
   }
 }
 
@@ -75,20 +75,18 @@
 .card-shine::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: -50%;
+  left: -50%;
+  width: 50%;
+  height: 200%;
   background: linear-gradient(
-    120deg,
+    90deg,
     transparent 0%,
-    transparent 40%,
     rgba(255, 255, 255, 0.08) 50%,
-    transparent 60%,
     transparent 100%
   );
-  background-size: 200% 100%;
   opacity: 0;
+  transform: rotate(25deg);
   transition: opacity 0.3s ease;
   pointer-events: none;
   z-index: 10;
@@ -96,7 +94,7 @@
 
 .card-shine:hover::before {
   opacity: 1;
-  animation: shine 1.5s ease-in-out;
+  animation: shine 0.8s ease-out;
 }
 
 /* Transitions globales pour tous les éléments interactifs */

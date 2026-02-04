@@ -16,6 +16,24 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 - **Backend API** : https://foot-vibes-api.onrender.com
 - **GitHub** : https://github.com/Xtorbi/foot-vibes
 
+### Session du 4 fevrier 2026 (nuit) - Polish carte joueur
+
+**Effet tilt carte (PlayerCard.jsx)** :
+- Tilt augmente de 10° a 15° au hover
+- Effet 3D plus prononce
+
+**Effet shine refait (index.css)** :
+- Nouvelle approche : bandeau unique qui traverse la carte
+- 1 seul passage (gauche → droite), 0.8s
+- Angle 25°, largeur 50%
+- Plus elegant que les multiples allers-retours
+
+**Fichiers modifies** :
+- `frontend/src/components/PlayerCard.jsx` : tilt 15°
+- `frontend/src/index.css` : nouveau keyframes shine + .card-shine refait
+
+---
+
 ### Session du 4 fevrier 2026 (soir) - Design Vibes
 
 **Nouveau fond anime "Vibes" (index.css)** :

@@ -66,7 +66,7 @@ function PlayerCard({ player, animate = false, exitDirection = null, voteFlash =
     const rect = cardRef.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: y * 10, y: -x * 10 }); // Max 10deg tilt
+    setTilt({ x: y * 15, y: -x * 15 }); // Max 15deg tilt
   };
 
   const handleMouseLeave = () => {
