@@ -18,17 +18,21 @@ const POSITIONS = {
   'Attaquant': 'Attaquant',
 };
 
-// Formater le nom du club (première lettre cap, reste minuscule sauf villes)
+// Formater le nom du club
 const formatClubName = (name) => {
   if (!name) return '';
-  const lowercaseWords = ['de', 'du', 'des', 'et', 'le', 'la', 'les', 'fc', 'sc', 'ac', 'as', 'en'];
+  // Acronymes à garder en majuscules
+  const acronyms = ['fc', 'sc', 'ac', 'as', 'aj', 'rc', 'ogc', 'losc', 'psg', 'om', 'ol', 'sco'];
+  // Mots de liaison en minuscules
+  const lowercaseWords = ['de', 'du', 'des', 'et', 'le', 'la', 'les', 'en'];
+
   return name.split(' ').map((word, index) => {
     const lower = word.toLowerCase();
-    // Toujours capitaliser le premier mot
-    if (index === 0) return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-    // Mots de liaison en minuscules
-    if (lowercaseWords.includes(lower)) return lower;
-    // Autres mots (villes, etc.) avec majuscule
+    // Acronymes en majuscules
+    if (acronyms.includes(lower)) return word.toUpperCase();
+    // Mots de liaison en minuscules (sauf premier mot)
+    if (index > 0 && lowercaseWords.includes(lower)) return lower;
+    // Autres mots : première lettre majuscule
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   }).join(' ');
 };
