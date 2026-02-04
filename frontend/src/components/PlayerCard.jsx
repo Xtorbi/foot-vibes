@@ -82,7 +82,7 @@ function PlayerCard({ player, animate = false, exitDirection = null, voteFlash =
           </span>
           {voteCount !== null && (
             <span className="text-white/50 text-xs">
-              {voteCount} votes
+              {voteCount} votes reçus
             </span>
           )}
         </div>

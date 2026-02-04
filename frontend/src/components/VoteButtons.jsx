@@ -31,19 +31,17 @@ function VoteButtons({ onVote, disabled }) {
         </svg>
       </button>
 
-      {/* Neutral - Skip */}
+      {/* Neutral - Je ne sais pas */}
       <button
         onClick={() => handleClick('neutral')}
         disabled={disabled}
         className={`w-12 h-12 sm:w-11 sm:h-11 ${baseClasses}
-                   bg-white/5 border-2 border-white/10 text-white/40
-                   hover:bg-white/10 hover:border-white/30 hover:text-white/60
+                   bg-white/5 border-2 border-white/10
+                   hover:bg-white/10 hover:border-white/30
                    ${clickedButton === 'neutral' ? 'animate-vote-bounce' : ''}`}
-        aria-label="Passer"
+        aria-label="Je ne sais pas"
       >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-        </svg>
+        <span className="text-2xl sm:text-xl opacity-70 saturate-50 hover:opacity-100 hover:saturate-100 transition-all">🤔</span>
       </button>
 
       {/* Upvote - Pouce haut */}

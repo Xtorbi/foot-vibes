@@ -79,7 +79,7 @@ function Home() {
 
           {/* Tagline */}
           <p className="text-white/70 text-lg sm:text-xl mb-2">
-            Vote pour tes joueurs preferés
+            Vote pour tes joueurs de Ligue 1 préférés
           </p>
           <p className="text-fv-green text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-8">
             Saison 2025-2026
@@ -95,7 +95,7 @@ function Home() {
                          active:scale-95 transition-all duration-200
                          inline-flex items-center gap-2 shadow-lg"
             >
-              Commencer a voter
+              Commencer à voter
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>

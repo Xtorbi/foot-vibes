@@ -7,12 +7,12 @@ import Confetti from '../components/Confetti';
 import { fetchRandomPlayer, submitVote } from '../utils/api';
 
 const MILESTONES = {
-  10: '10 votes !',
-  25: '25 votes !',
-  50: 'CINQUANTE !',
-  100: 'CENT VOTES !',
-  250: 'Machine !',
-  500: 'LEGENDAIRE !',
+  10: '10 votes ! Tu t\'es bien échauffé.',
+  25: '25 votes ! Quelle aisance balle au pied.',
+  50: '50 votes ! Ciseau-retourné.',
+  100: '100 votes ! Quelle merveille !',
+  250: '250 votes ! Mais où t\'arrêteras-tu ?',
+  500: '500 votes ! Hall of Fame !',
 };
 
 function Vote() {
@@ -125,9 +125,14 @@ function Vote() {
               animate
               exitDirection={exitDirection}
               voteFlash={voteFlash}
-              voteCount={voteCount}
+              voteCount={player?.total_votes}
             />
             <VoteButtons onVote={handleVote} disabled={loading || exitDirection} />
+
+            {/* Compteur perso */}
+            <p className="text-center text-white/40 text-sm mt-4">
+              Mes votes : {voteCount}
+            </p>
 
             {/* Feedback overlay - positionné sous les boutons */}
             {feedback && (
