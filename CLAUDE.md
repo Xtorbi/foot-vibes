@@ -25,6 +25,7 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 - Header sticky qui apparait au scroll (> 80px) avec logo reduit + nav
 - Bouton "Voir le classement" ajoute a cote du CTA principal
 - Boutons CTA homogeneises (meme hauteur py-4, meme padding px-8)
+- Tagline : "Vote pour tes joueurs de Ligue 1 preferes"
 
 **Cartes clubs (ClubGrid.jsx)** :
 - Fond degrade aux couleurs de chaque club (opacite 30%/15%)
@@ -36,17 +37,37 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 - Ajout propriete `colors` pour chaque club (2 couleurs principales)
 - PSG (#004170, #DA291C), OM (#2FAEE0, #FFFFFF), Lyon (#1A3E8F, #E30613)...
 
-**Page Vote** :
+**Page Vote - UX amelioree** :
 - Ajout message d'erreur visible si API indisponible
 - Bouton "Reessayer" pour recharger le joueur
+- Affichage "X votes recus" du joueur (total_votes)
+- Compteur perso "Mes votes : X" sous les boutons
+- Bouton neutre remplace par emoji 🤔 stylise (je ne sais pas)
+- Messages paliers theme foot :
+  - 10 : "Tu t'es bien echauffe"
+  - 25 : "Quelle aisance balle au pied"
+  - 50 : "Ciseau-retourne"
+  - 100 : "Quelle merveille !"
+  - 250 : "Mais ou t'arreteras-tu ?"
+  - 500 : "Hall of Fame !"
+
+**Stats gardiens (backend)** :
+- Script `updateGoalkeeperStats.js` via API SofaScore
+- Source : https://api.sofascore.com (saison 77356 = 2025-2026)
+- Stats recuperees : clean_sheets, saves, matches
+- 32 gardiens mis a jour avec donnees reelles
 
 **Fichiers modifies** :
 - `frontend/src/pages/Home.jsx` : refonte complete hero + header sticky
 - `frontend/src/components/ClubGrid.jsx` : cartes avec fond degrade
 - `frontend/src/config/clubs.js` : couleurs clubs ajoutees
-- `frontend/src/pages/Vote.jsx` : gestion erreur API
+- `frontend/src/pages/Vote.jsx` : gestion erreur API, compteur, paliers
+- `frontend/src/components/PlayerCard.jsx` : "votes recus"
+- `frontend/src/components/VoteButtons.jsx` : emoji 🤔 stylise
 - `frontend/src/index.css` : classe `.logo-glow`
 - `frontend/src/App.jsx` : header masque sur homepage
+- `backend/scripts/updateGoalkeeperStats.js` : nouveau script SofaScore
+- `backend/database/ligue1.db` : stats gardiens mises a jour
 
 ---
 
