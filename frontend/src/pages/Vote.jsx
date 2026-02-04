@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useMode } from '../contexts/ModeContext';
 import PlayerCard from '../components/PlayerCard';
 import PlayerCardSkeleton from '../components/PlayerCardSkeleton';
@@ -20,34 +20,40 @@ function Vote() {
   const [player, setPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState(null);
-  const [votedIds, setVotedIds] = useState([]);
   const [celebration, setCelebration] = useState({ trigger: 0, message: '' });
-  const [exitDirection, setExitDirection] = useState(null); // 'left', 'right', 'down'
-  const [voteFlash, setVoteFlash] = useState(null); // 'up', 'down', 'neutral'
-  const [transitioning, setTransitioning] = useState(false); // Transition en cours
+  const [exitDirection, setExitDirection] = useState(null);
+  const [voteFlash, setVoteFlash] = useState(null);
+  const [showCard, setShowCard] = useState(false);
   const [error, setError] = useState(null);
 
-  const loadPlayer = useCallback(async (excludeIds = votedIds) => {
+  // Utiliser une ref pour les IDs votés (pas de re-render)
+  const votedIdsRef = useRef([]);
+
+  const loadPlayer = async () => {
     setLoading(true);
+    setShowCard(false);
     setError(null);
     try {
-      const data = await fetchRandomPlayer(mode, excludeIds);
+      const data = await fetchRandomPlayer(mode, votedIdsRef.current);
       setPlayer(data);
+      // Petit délai avant d'afficher pour éviter le flash
+      setTimeout(() => setShowCard(true), 50);
     } catch (err) {
       console.error('Erreur chargement joueur:', err);
       setError('Impossible de charger le joueur. Vérifie que le backend est démarré.');
     } finally {
       setLoading(false);
     }
-  }, [mode]);
+  };
 
   // Charger le premier joueur au montage ou changement de mode
   useEffect(() => {
-    loadPlayer([]);
+    votedIdsRef.current = [];
+    loadPlayer();
   }, [mode]);
 
   const handleVote = async (voteType) => {
-    if (!player || exitDirection || transitioning) return;
+    if (!player || exitDirection) return;
 
     // Flash coloré immédiat
     setVoteFlash(voteType);
@@ -63,6 +69,9 @@ function Vote() {
       const newCount = voteCount + 1;
       incrementVoteCount();
 
+      // Ajouter à la ref
+      votedIdsRef.current = [...votedIdsRef.current, player.id];
+
       // Vérifier si on atteint un milestone
       if (MILESTONES[newCount]) {
         setCelebration({ trigger: Date.now(), message: MILESTONES[newCount] });
@@ -74,20 +83,15 @@ function Vote() {
       }
 
       // Attendre la fin de l'animation avant de charger le suivant
-      const newVotedIds = [...votedIds, player.id];
       setTimeout(() => {
-        setTransitioning(true);
         setExitDirection(null);
         setVoteFlash(null);
-        setPlayer(null);
-        setVotedIds(newVotedIds);
-        loadPlayer(newVotedIds).then(() => setTransitioning(false));
-      }, 400); // 150ms flash + 250ms exit
+        loadPlayer();
+      }, 400);
     } catch (err) {
       console.error('Erreur vote:', err);
       setExitDirection(null);
       setVoteFlash(null);
-      setTransitioning(false);
     }
   };
 
@@ -101,15 +105,12 @@ function Vote() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [player]);
 
-  // Statiques: 'bg-deep', 'bg-glow', 'bg-corner', 'bg-dual', 'bg-aurora-static'
-  // Animés: 'bg-aurora', 'bg-mesh', 'bg-grid', 'bg-aurora-intense'
   const bgStyle = 'bg-vibes';
 
   return (
     <main className={`h-[calc(100vh-64px)] ${bgStyle} px-4 flex flex-col justify-center`}>
       <Confetti trigger={celebration.trigger} message={celebration.message} />
       <div className="max-w-sm mx-auto w-full">
-        {/* Contenu avec feedback en overlay */}
         {error ? (
           <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-6 text-center">
             <p className="text-red-400 mb-4">{error}</p>
@@ -120,7 +121,7 @@ function Vote() {
               Réessayer
             </button>
           </div>
-        ) : loading || transitioning || !player ? (
+        ) : loading || !showCard || !player ? (
           <PlayerCardSkeleton />
         ) : (
           <div className="relative">
@@ -132,14 +133,12 @@ function Vote() {
               voteFlash={voteFlash}
               voteCount={player?.total_votes}
             />
-            <VoteButtons onVote={handleVote} disabled={loading || exitDirection || transitioning} />
+            <VoteButtons onVote={handleVote} disabled={loading || exitDirection} />
 
-            {/* Compteur perso */}
             <p className="text-center text-white/40 text-sm mt-4">
               Mes votes : {voteCount}
             </p>
 
-            {/* Feedback overlay - positionné sous les boutons */}
             {feedback && (
               <div className="absolute left-0 right-0 -bottom-8 flex justify-center">
                 <div className="bg-white/10 text-white text-center py-1.5 px-4 rounded-full text-xs
@@ -149,7 +148,6 @@ function Vote() {
               </div>
             )}
 
-            {/* Hint clavier - masqué sur mobile */}
             <p className="hidden sm:block text-center text-white/20 text-[10px] mt-4">
               ← → pour voter · ↓ pour passer
             </p>
