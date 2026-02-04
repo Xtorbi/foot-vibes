@@ -4,6 +4,12 @@ import { CLUB_LOGOS } from '../config/clubs';
 // Placeholder SVG en base64
 const PLACEHOLDER_PHOTO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='35' r='20' fill='%234a5568'/%3E%3Cellipse cx='50' cy='85' rx='30' ry='25' fill='%234a5568'/%3E%3C/svg%3E";
 
+// URLs de photos par défaut à ignorer (Transfermarkt placeholder)
+const isDefaultPhoto = (url) => {
+  if (!url) return true;
+  return url.includes('default.jpg') || url.includes('placeholder');
+};
+
 // Mapping positions avec accents
 const POSITIONS = {
   'Defenseur': 'Défenseur',
@@ -107,7 +113,7 @@ function PlayerCard({ player, animate = false, exitDirection = null, voteFlash =
           {/* Photo avec placeholder */}
           <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-fv-navy mb-2 bg-fv-navy">
             <img
-              src={player.photo_url || PLACEHOLDER_PHOTO}
+              src={isDefaultPhoto(player.photo_url) ? PLACEHOLDER_PHOTO : player.photo_url}
               alt={player.name}
               className="w-full h-full object-cover"
               onError={(e) => { e.target.src = PLACEHOLDER_PHOTO; }}
