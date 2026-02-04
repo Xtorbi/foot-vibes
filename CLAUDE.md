@@ -16,7 +16,60 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 - **Backend API** : https://foot-vibes-api.onrender.com
 - **GitHub** : https://github.com/Xtorbi/foot-vibes
 
-### Session du 4 fevrier 2026
+### Session du 4 fevrier 2026 (soir) - Design Vibes
+
+**Nouveau fond anime "Vibes" (index.css)** :
+- Classe `.bg-vibes` : ondes animees avec effet parallaxe
+- 2 couches d'ondes a vitesses differentes (80s et 60s)
+- Ondes en SVG avec degradé vertical (6% opacite en haut, fondu a 30%)
+- Couleurs : turquoise (#10B981) + indigo (#6366f1)
+- Applique sur les 3 pages : Home, Vote, Classement
+
+**Cartes clubs flat (ClubGrid.jsx)** :
+- Fond unifie `bg-white/10` (plus de degrade par club)
+- Hover : `bg-white/15`
+- `backdrop-blur-sm` pour flouter les ondes derriere
+
+**Page Classement - Top 3 turquoise (RankingTable.jsx)** :
+- 1er : turquoise plein (`bg-emerald-500`)
+- 2e : turquoise 70% (`bg-emerald-500/70`)
+- 3e : turquoise 40% (`bg-emerald-500/40`)
+- Plus de style or/argent/bronze
+
+**Drapeaux nationalites - variantes francaises ajoutees** :
+- ~50 nouvelles variantes : Allemagne, Espagne, Bresil, Senegal, etc.
+- Toutes les nationalites de la BDD maintenant mappees
+
+**Page Vote - viewport optimise** :
+- Layout `h-[calc(100vh-64px)]` avec flex center
+- Plus besoin de scroller pour voir les boutons
+- Espacements reduits : stats py-2, club pb-3, hint mt-4
+
+**Carte joueur - formatage noms (PlayerCard.jsx)** :
+- Prenom : capitalize (Geronimo, pas GERONIMO)
+- Club : formatage intelligent (Olympique de Marseille)
+- Fonction `formatClubName()` : mots de liaison en minuscules
+
+**Logo glow reduit (index.css)** :
+- text-shadow : 20px/35% + 40px/15% (etait 30px/50% + 60px/30%)
+
+**BDD - position corrigee** :
+- "Defenseur" → "Défenseur" (avec accent)
+- Contrainte CHECK mise a jour
+
+**Fichiers modifies** :
+- `frontend/src/index.css` : classe `.bg-vibes`, logo-glow reduit
+- `frontend/src/pages/Home.jsx` : bg-vibes
+- `frontend/src/pages/Vote.jsx` : bg-vibes, layout viewport
+- `frontend/src/pages/Ranking.jsx` : bg-vibes
+- `frontend/src/components/ClubGrid.jsx` : cartes flat
+- `frontend/src/components/RankingTable.jsx` : top 3 turquoise, nationalites FR
+- `frontend/src/components/PlayerCard.jsx` : formatage noms, espacements
+- `backend/database/ligue1.db` : position Défenseur
+
+---
+
+### Session du 4 fevrier 2026 (matin)
 
 **Refonte page d'accueil (Home.jsx)** :
 - Grand logo "FOOT VIBES" central (5xl a 7xl responsive)
@@ -28,7 +81,7 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 - Tagline : "Vote pour tes joueurs de Ligue 1 preferes"
 
 **Cartes clubs (ClubGrid.jsx)** :
-- Fond degrade aux couleurs de chaque club (opacite 30%/15%)
+- Fond degrade aux couleurs de chaque club (opacite 30%/15%) → remplace par flat en session soir
 - Disposition verticale : logo au-dessus du nom
 - Hover : bordure verte + glow vert (coherence logo VIBES)
 - Logos plus grands (w-12 h-12)
@@ -56,18 +109,6 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 - Source : https://api.sofascore.com (saison 77356 = 2025-2026)
 - Stats recuperees : clean_sheets, saves, matches
 - 32 gardiens mis a jour avec donnees reelles
-
-**Fichiers modifies** :
-- `frontend/src/pages/Home.jsx` : refonte complete hero + header sticky
-- `frontend/src/components/ClubGrid.jsx` : cartes avec fond degrade
-- `frontend/src/config/clubs.js` : couleurs clubs ajoutees
-- `frontend/src/pages/Vote.jsx` : gestion erreur API, compteur, paliers
-- `frontend/src/components/PlayerCard.jsx` : "votes recus"
-- `frontend/src/components/VoteButtons.jsx` : emoji 🤔 stylise
-- `frontend/src/index.css` : classe `.logo-glow`
-- `frontend/src/App.jsx` : header masque sur homepage
-- `backend/scripts/updateGoalkeeperStats.js` : nouveau script SofaScore
-- `backend/database/ligue1.db` : stats gardiens mises a jour
 
 ---
 
@@ -437,3 +478,8 @@ node scripts/importTransfermarkt.js
 | 4 fev 2026 | Refonte homepage : grand logo + cartes clubs colorees |
 | 4 fev 2026 | Header sticky au scroll sur homepage |
 | 4 fev 2026 | Vert fv-green (#10B981) comme fil conducteur design |
+| 4 fev 2026 (soir) | Fond "Vibes" : ondes animees parallaxe sur toutes les pages |
+| 4 fev 2026 (soir) | Cartes clubs flat (bg-white/10) - abandon des couleurs par club |
+| 4 fev 2026 (soir) | Top 3 classement : turquoise avec opacites (plus d'or/argent/bronze) |
+| 4 fev 2026 (soir) | Vote : layout viewport sans scroll |
+| 4 fev 2026 (soir) | Noms clubs : formatage intelligent (Olympique de Marseille) |

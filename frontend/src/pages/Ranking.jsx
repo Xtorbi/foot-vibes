@@ -42,7 +42,8 @@ function Ranking() {
   }, [clubFilter, positionFilter, periodFilter, frenchOnly, search]);
 
   return (
-    <main className="container mx-auto px-4 py-6 max-w-4xl">
+    <main className="min-h-screen bg-vibes">
+      <div className="container mx-auto px-4 py-6 max-w-4xl relative z-10">
       {/* Ligne 1: Club + Position (dropdowns) + Toggle Français */}
       <div className="flex flex-wrap items-center gap-3 mb-4 animate-fade-in-up">
         {/* Club dropdown */}
@@ -140,6 +141,7 @@ function Ranking() {
           )}
         </>
       )}
+      </div>
     </main>
   );
 }

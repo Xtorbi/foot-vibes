@@ -483,5 +483,79 @@ button:focus-visible, a:focus-visible {
 
 /* ===== Logo glow effect ===== */
 .logo-glow {
-  text-shadow: 0 0 30px rgba(16, 185, 129, 0.5), 0 0 60px rgba(16, 185, 129, 0.3);
+  text-shadow: 0 0 20px rgba(16, 185, 129, 0.35), 0 0 40px rgba(16, 185, 129, 0.15);
+}
+
+/* ===== VIBES BACKGROUND - Ondes parallaxe plein écran ===== */
+@keyframes vibesWave {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes vibesWaveVertical {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  100% {
+    transform: translateY(-50%) translateX(-25%);
+  }
+}
+
+.bg-vibes {
+  background: linear-gradient(135deg, #0d1424 0%, #1a1a2e 50%, #0d1424 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Voile léger sous les ondes */
+.bg-vibes .vibes-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(16,185,129,0.03) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Couche 1 - Ondes voilées avec dégradé discret */
+.bg-vibes::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1400 1000'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2310B981' stop-opacity='0.06'/%3E%3Cstop offset='30%25' stop-color='%2310B981' stop-opacity='0.01'/%3E%3Cstop offset='100%25' stop-color='%2310B981' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='g2' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%236366f1' stop-opacity='0.05'/%3E%3Cstop offset='30%25' stop-color='%236366f1' stop-opacity='0.01'/%3E%3Cstop offset='100%25' stop-color='%236366f1' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,200 Q350,360 700,200 T1400,200 L1400,320 Q1050,160 700,320 T0,320 Z' fill='url(%23g1)'/%3E%3Cpath d='M0,600 Q350,760 700,600 T1400,600 L1400,720 Q1050,560 700,720 T0,720 Z' fill='url(%23g2)'/%3E%3C/svg%3E");
+  background-size: 700px 500px;
+  background-repeat: repeat;
+  animation: vibesWaveVertical 80s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Couche 2 - Ondes voilées (parallaxe) discret */
+.bg-vibes::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1400 1000'%3E%3Cdefs%3E%3ClinearGradient id='g3' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2310B981' stop-opacity='0.06'/%3E%3Cstop offset='30%25' stop-color='%2310B981' stop-opacity='0.01'/%3E%3Cstop offset='100%25' stop-color='%2310B981' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,350 Q400,550 800,350 T1400,350 L1400,500 Q1000,300 600,500 T0,500 Z' fill='url(%23g3)'/%3E%3Cpath d='M0,800 Q400,1000 800,800 T1400,800 L1400,950 Q1000,750 600,950 T0,950 Z' fill='url(%23g3)'/%3E%3C/svg%3E");
+  background-size: 600px 500px;
+  background-repeat: repeat;
+  animation: vibesWaveVertical 60s linear infinite reverse;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-vibes > * {
+  position: relative;
+  z-index: 10;
 }

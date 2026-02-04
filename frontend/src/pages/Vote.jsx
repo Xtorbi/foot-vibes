@@ -98,12 +98,12 @@ function Vote() {
 
   // Statiques: 'bg-deep', 'bg-glow', 'bg-corner', 'bg-dual', 'bg-aurora-static'
   // Animés: 'bg-aurora', 'bg-mesh', 'bg-grid', 'bg-aurora-intense'
-  const bgStyle = 'bg-aurora-static';
+  const bgStyle = 'bg-vibes';
 
   return (
-    <main className={`min-h-screen ${bgStyle} px-4 py-4`}>
+    <main className={`h-[calc(100vh-64px)] ${bgStyle} px-4 flex flex-col justify-center`}>
       <Confetti trigger={celebration.trigger} message={celebration.message} />
-      <div className="max-w-sm mx-auto">
+      <div className="max-w-sm mx-auto w-full">
         {/* Contenu avec feedback en overlay */}
         {error ? (
           <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-6 text-center">
@@ -145,7 +145,7 @@ function Vote() {
             )}
 
             {/* Hint clavier - masqué sur mobile */}
-            <p className="hidden sm:block text-center text-white/20 text-[10px] mt-10">
+            <p className="hidden sm:block text-center text-white/20 text-[10px] mt-4">
               ← → pour voter · ↓ pour passer
             </p>
           </div>

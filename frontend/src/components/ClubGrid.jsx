@@ -18,13 +18,12 @@ function ClubGrid() {
           key={club.id}
           onClick={() => handleClubClick(club.id)}
           style={{
-            background: `linear-gradient(135deg, ${club.colors[0]}30, ${club.colors[1]}15)`,
             animationDelay: `${index * 25}ms`,
             animationFillMode: 'backwards',
           }}
           className="flex flex-col items-center justify-center gap-2 p-4
-                     border-2 border-white/10 rounded-2xl
-                     hover:border-fv-green/50 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]
+                     bg-white/10 backdrop-blur-sm rounded-2xl
+                     hover:bg-white/15
                      hover:scale-105 active:scale-95
                      transition-all duration-200 animate-fade-in-up"
         >
