@@ -140,61 +140,117 @@ function getPlayerById(req, res) {
 }
 
 function getRanking(req, res) {
-  const { context, position, club, search, limit = '50', offset = '0' } = req.query;
+  const { context, position, club, search, period, nationality, limit = '50', offset = '0' } = req.query;
 
-  let query = `
-    SELECT *, ROW_NUMBER() OVER (ORDER BY score DESC) as rank
-    FROM players
-    WHERE source_season = ?
-      AND archived = 0
-      AND total_votes >= 1
-  `;
-  let countQuery = `
-    SELECT COUNT(*) as total FROM players
-    WHERE source_season = ? AND archived = 0 AND total_votes >= 1
-  `;
-  const params = [CURRENT_SEASON];
-  const countParams = [CURRENT_SEASON];
+  // Calcul de la date de début selon la période
+  let dateFilter = null;
+  if (period === 'week') {
+    dateFilter = "datetime('now', '-7 days')";
+  } else if (period === 'month') {
+    dateFilter = "datetime('now', '-30 days')";
+  }
+  // 'season' ou undefined = pas de filtre date (tout depuis le début)
+
+  let query, countQuery;
+  const params = [];
+  const countParams = [];
+
+  if (dateFilter) {
+    // Score calculé dynamiquement sur la période
+    query = `
+      SELECT p.*,
+        COALESCE(SUM(CASE WHEN v.vote_type = 'up' THEN 1 WHEN v.vote_type = 'down' THEN -1 ELSE 0 END), 0) as period_score,
+        COUNT(v.id) as period_votes,
+        ROW_NUMBER() OVER (ORDER BY COALESCE(SUM(CASE WHEN v.vote_type = 'up' THEN 1 WHEN v.vote_type = 'down' THEN -1 ELSE 0 END), 0) DESC) as rank
+      FROM players p
+      LEFT JOIN votes v ON p.id = v.player_id AND v.voted_at >= ${dateFilter}
+      WHERE p.source_season = ?
+        AND p.archived = 0
+    `;
+    countQuery = `
+      SELECT COUNT(DISTINCT p.id) as total
+      FROM players p
+      LEFT JOIN votes v ON p.id = v.player_id AND v.voted_at >= ${dateFilter}
+      WHERE p.source_season = ? AND p.archived = 0
+    `;
+    params.push(CURRENT_SEASON);
+    countParams.push(CURRENT_SEASON);
+  } else {
+    // Score total (comportement actuel)
+    query = `
+      SELECT *, ROW_NUMBER() OVER (ORDER BY score DESC) as rank
+      FROM players
+      WHERE source_season = ?
+        AND archived = 0
+        AND total_votes >= 1
+    `;
+    countQuery = `
+      SELECT COUNT(*) as total FROM players
+      WHERE source_season = ? AND archived = 0 AND total_votes >= 1
+    `;
+    params.push(CURRENT_SEASON);
+    countParams.push(CURRENT_SEASON);
+  }
+
+  // Préfixe pour les colonnes (p. si période, rien sinon)
+  const col = dateFilter ? 'p.' : '';
 
   if (context && context !== 'ligue1') {
     const clubData = L1_CLUBS.find(c => c.id === context);
     if (clubData) {
-      query += ' AND club = ?';
-      countQuery += ' AND club = ?';
+      query += ` AND ${col}club = ?`;
+      countQuery += ` AND ${col}club = ?`;
       params.push(clubData.name);
       countParams.push(clubData.name);
     }
   }
 
   if (position) {
-    query += ' AND position = ?';
-    countQuery += ' AND position = ?';
+    query += ` AND ${col}position = ?`;
+    countQuery += ` AND ${col}position = ?`;
     params.push(position);
     countParams.push(position);
   }
 
   if (club) {
-    query += ' AND club = ?';
-    countQuery += ' AND club = ?';
+    query += ` AND ${col}club = ?`;
+    countQuery += ` AND ${col}club = ?`;
     params.push(club);
     countParams.push(club);
   }
 
   if (search) {
-    query += ' AND name LIKE ?';
-    countQuery += ' AND name LIKE ?';
+    query += ` AND ${col}name LIKE ?`;
+    countQuery += ` AND ${col}name LIKE ?`;
     params.push(`%${search}%`);
     countParams.push(`%${search}%`);
   }
 
-  query += ' ORDER BY score DESC LIMIT ? OFFSET ?';
+  if (nationality) {
+    query += ` AND ${col}nationality = ?`;
+    countQuery += ` AND ${col}nationality = ?`;
+    params.push(nationality);
+    countParams.push(nationality);
+  }
+
+  if (dateFilter) {
+    // GROUP BY et filtre sur joueurs ayant des votes dans la période
+    query += ' GROUP BY p.id HAVING period_votes >= 1 ORDER BY period_score DESC LIMIT ? OFFSET ?';
+  } else {
+    query += ' ORDER BY score DESC LIMIT ? OFFSET ?';
+  }
   params.push(parseInt(limit, 10), parseInt(offset, 10));
 
   const players = queryAll(query, params);
   const row = queryOne(countQuery, countParams);
   const total = row ? row.total : 0;
 
-  res.json({ players, total });
+  // Pour les résultats avec période, utiliser period_score comme score
+  const result = dateFilter
+    ? players.map(p => ({ ...p, score: p.period_score, total_votes: p.period_votes }))
+    : players;
+
+  res.json({ players: result, total });
 }
 
 function getContexts(req, res) {

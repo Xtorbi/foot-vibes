@@ -123,6 +123,7 @@ async function initDb() {
 
   db.run(`CREATE INDEX IF NOT EXISTS idx_votes_player ON votes(player_id)`);
   db.run(`CREATE INDEX IF NOT EXISTS idx_votes_context ON votes(context)`);
+  db.run(`CREATE INDEX IF NOT EXISTS idx_votes_date ON votes(voted_at)`);
 
   saveDb();
   return db;

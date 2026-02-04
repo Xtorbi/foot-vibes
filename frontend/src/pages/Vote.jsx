@@ -4,9 +4,7 @@ import PlayerCard from '../components/PlayerCard';
 import PlayerCardSkeleton from '../components/PlayerCardSkeleton';
 import VoteButtons from '../components/VoteButtons';
 import Confetti from '../components/Confetti';
-import AnimatedCounter from '../components/AnimatedCounter';
 import { fetchRandomPlayer, submitVote } from '../utils/api';
-import { CLUB_LOGOS } from '../config/clubs';
 
 const MILESTONES = {
   10: '10 votes !',
@@ -24,14 +22,20 @@ function Vote() {
   const [feedback, setFeedback] = useState(null);
   const [votedIds, setVotedIds] = useState([]);
   const [celebration, setCelebration] = useState({ trigger: 0, message: '' });
+  const [exitDirection, setExitDirection] = useState(null); // 'left', 'right', 'down'
+  const [voteFlash, setVoteFlash] = useState(null); // 'up', 'down', 'neutral'
+  const [error, setError] = useState(null);
 
   const loadPlayer = useCallback(async () => {
+    setPlayer(null); // Reset immédiat pour éviter le blink
     setLoading(true);
+    setError(null);
     try {
       const data = await fetchRandomPlayer(mode, votedIds);
       setPlayer(data);
     } catch (err) {
       console.error('Erreur chargement joueur:', err);
+      setError('Impossible de charger le joueur. Vérifie que le backend est démarré.');
     } finally {
       setLoading(false);
     }
@@ -42,7 +46,16 @@ function Vote() {
   }, [loadPlayer]);
 
   const handleVote = async (voteType) => {
-    if (!player) return;
+    if (!player || exitDirection) return;
+
+    // Flash coloré immédiat
+    setVoteFlash(voteType);
+
+    // Déclencher l'animation de sortie après un court délai
+    setTimeout(() => {
+      const direction = voteType === 'up' ? 'right' : voteType === 'down' ? 'left' : 'down';
+      setExitDirection(direction);
+    }, 150);
 
     try {
       const result = await submitVote(player.id, voteType, mode);
@@ -60,9 +73,16 @@ function Vote() {
         setTimeout(() => setFeedback(null), 2000);
       }
 
-      loadPlayer();
+      // Attendre la fin de l'animation avant de charger le suivant
+      setTimeout(() => {
+        setExitDirection(null);
+        setVoteFlash(null);
+        loadPlayer();
+      }, 400); // 150ms flash + 250ms exit
     } catch (err) {
       console.error('Erreur vote:', err);
+      setExitDirection(null);
+      setVoteFlash(null);
     }
   };
 
@@ -76,45 +96,54 @@ function Vote() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [player]);
 
-  // Styles de fond disponibles: 'bg-fv-navy', 'bg-aurora', 'bg-mesh', 'bg-grid', 'bg-aurora-intense'
-  const bgStyle = 'bg-aurora';
+  // Statiques: 'bg-deep', 'bg-glow', 'bg-corner', 'bg-dual', 'bg-aurora-static'
+  // Animés: 'bg-aurora', 'bg-mesh', 'bg-grid', 'bg-aurora-intense'
+  const bgStyle = 'bg-aurora-static';
 
   return (
     <main className={`min-h-screen ${bgStyle} px-4 py-4`}>
       <Confetti trigger={celebration.trigger} message={celebration.message} />
       <div className="max-w-sm mx-auto">
-        {/* Header discret */}
-        <div className="flex justify-between items-center mb-4 text-[10px] text-white/40">
-          <span className="uppercase tracking-wider flex items-center gap-1.5">
-            {mode !== 'ligue1' && CLUB_LOGOS[mode] && (
-              <img src={CLUB_LOGOS[mode]} alt={mode} className="w-4 h-4 object-contain" />
-            )}
-            {mode === 'ligue1' ? 'Ligue 1' : mode}
-          </span>
-          <span><AnimatedCounter value={voteCount} /> votes</span>
-        </div>
-
-        {/* Feedback */}
-        {feedback && (
-          <div className="bg-white/10 text-white text-center py-1.5 px-3 rounded-lg mb-3 text-xs
-                          animate-fade-in-up backdrop-blur-sm border border-white/10">
-            {feedback}
+        {/* Contenu avec feedback en overlay */}
+        {error ? (
+          <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-6 text-center">
+            <p className="text-red-400 mb-4">{error}</p>
+            <button
+              onClick={loadPlayer}
+              className="bg-fv-green text-fv-navy font-bold px-6 py-2 rounded-full hover:bg-fv-green-dark transition-colors"
+            >
+              Réessayer
+            </button>
           </div>
-        )}
-
-        {/* Contenu */}
-        {loading ? (
+        ) : loading ? (
           <PlayerCardSkeleton />
         ) : (
-          <>
-            <PlayerCard key={player?.id} player={player} animate />
-            <VoteButtons onVote={handleVote} disabled={loading} />
+          <div className="relative">
+            <PlayerCard
+              key={player?.id}
+              player={player}
+              animate
+              exitDirection={exitDirection}
+              voteFlash={voteFlash}
+              voteCount={voteCount}
+            />
+            <VoteButtons onVote={handleVote} disabled={loading || exitDirection} />
 
-            {/* Hint clavier */}
-            <p className="text-center text-white/20 text-[10px] mt-4">
+            {/* Feedback overlay - positionné sous les boutons */}
+            {feedback && (
+              <div className="absolute left-0 right-0 -bottom-8 flex justify-center">
+                <div className="bg-white/10 text-white text-center py-1.5 px-4 rounded-full text-xs
+                                animate-feedback-in backdrop-blur-sm border border-white/10">
+                  {feedback}
+                </div>
+              </div>
+            )}
+
+            {/* Hint clavier - masqué sur mobile */}
+            <p className="hidden sm:block text-center text-white/20 text-[10px] mt-10">
               ← → pour voter · ↓ pour passer
             </p>
-          </>
+          </div>
         )}
       </div>
     </main>

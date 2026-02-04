@@ -4,11 +4,41 @@ import { CLUB_LOGOS } from '../config/clubs';
 // Placeholder SVG en base64
 const PLACEHOLDER_PHOTO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='35' r='20' fill='%234a5568'/%3E%3Cellipse cx='50' cy='85' rx='30' ry='25' fill='%234a5568'/%3E%3C/svg%3E";
 
-function PlayerCard({ player, animate = false }) {
+// Mapping positions avec accents
+const POSITIONS = {
+  'Defenseur': 'Défenseur',
+  'Gardien': 'Gardien',
+  'Milieu': 'Milieu',
+  'Attaquant': 'Attaquant',
+};
+
+function PlayerCard({ player, animate = false, exitDirection = null, voteFlash = null, voteCount = null }) {
   const cardRef = useRef(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
   if (!player) return null;
+
+  const getExitClass = () => {
+    if (!exitDirection) return '';
+    if (exitDirection === 'left') return 'animate-exit-left';
+    if (exitDirection === 'right') return 'animate-exit-right';
+    if (exitDirection === 'down') return 'animate-exit-down';
+    return '';
+  };
+
+  const getFlashOverlay = () => {
+    if (!voteFlash) return null;
+    const colors = {
+      up: 'bg-emerald-500/30',
+      down: 'bg-red-500/30',
+      neutral: 'bg-white/20',
+    };
+    return (
+      <div
+        className={`absolute inset-0 ${colors[voteFlash]} rounded-2xl animate-vote-flash pointer-events-none z-20`}
+      />
+    );
+  };
 
   const isGoalkeeper = player.position === 'Gardien';
   const nameParts = player.name.split(' ');
@@ -29,30 +59,38 @@ function PlayerCard({ player, animate = false }) {
   };
 
   return (
-    <div className={`w-full max-w-[300px] mx-auto ${animate ? 'animate-fade-in-up' : ''}`}>
+    <div className={`w-full max-w-[300px] mx-auto ${getExitClass()}`}>
       {/* Card principale avec effet 3D */}
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="card-shine bg-fv-navy-light rounded-2xl overflow-hidden shadow-material-3
+        className="relative card-shine bg-fv-navy-light rounded-2xl overflow-hidden shadow-material-3
                    transition-all duration-150 hover:shadow-material-5"
         style={{
           transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
           transformStyle: 'preserve-3d',
         }}
       >
-        {/* Badge position */}
-        <div className="flex justify-center pt-3 pb-1">
-          <span className="px-3 py-0.5 bg-fv-navy text-white text-[10px] font-semibold tracking-wider rounded-full uppercase">
-            {player.position}
+        {/* Flash overlay */}
+        {getFlashOverlay()}
+
+        {/* Header : position à gauche, votes à droite */}
+        <div className="flex justify-between items-center px-3 pt-3 pb-1">
+          <span className="text-white/50 text-xs tracking-wider">
+            {POSITIONS[player.position] || player.position}
           </span>
+          {voteCount !== null && (
+            <span className="text-white/50 text-xs">
+              {voteCount} votes
+            </span>
+          )}
         </div>
 
         {/* Photo + Nom */}
         <div className="relative flex flex-col items-center px-4 pb-3">
           {/* Photo avec placeholder */}
-          <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-fv-navy mb-2 bg-fv-navy">
+          <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-fv-navy mb-2 bg-fv-navy">
             <img
               src={player.photo_url || PLACEHOLDER_PHOTO}
               alt={player.name}
@@ -63,38 +101,38 @@ function PlayerCard({ player, animate = false }) {
 
           {/* Nom */}
           {firstName && (
-            <p className="text-white/70 text-xs tracking-wide">{firstName}</p>
+            <p className="text-white/70 text-sm tracking-wide uppercase">{firstName}</p>
           )}
-          <h2 className="text-white text-lg font-extrabold tracking-wide uppercase">
+          <h2 className="text-white text-2xl font-extrabold tracking-wide uppercase">
             {lastName}
           </h2>
         </div>
 
         {/* Club */}
-        <div className="flex justify-center items-center gap-2 py-2 border-t border-fv-navy">
+        <div className="flex justify-center items-center gap-2 pt-1 pb-6">
           {clubLogo && (
             <img src={clubLogo} alt={player.club} className="w-4 h-4 object-contain" />
           )}
-          <p className="text-white/50 text-[10px] tracking-widest uppercase">{player.club}</p>
+          <p className="text-white/50 text-xs tracking-widest uppercase">{player.club}</p>
         </div>
 
-        {/* Stats grid compact */}
-        <div className="grid grid-cols-2 border-t border-fv-navy text-xs">
-          <div className="py-2 px-3 border-r border-b border-fv-navy">
-            <span className="text-white/50">Matchs</span>
-            <span className="text-white font-bold ml-1">{player.matches_played || '-'}</span>
+        {/* Stats tableau 2 colonnes */}
+        <div className="grid grid-cols-2 border-t border-fv-navy">
+          <div className="flex justify-between items-center px-4 py-3 border-r border-b border-fv-navy">
+            <span className="text-white/70 text-sm">Matchs</span>
+            <span className="text-white font-bold text-xl">{player.matches_played || '-'}</span>
           </div>
-          <div className="py-2 px-3 border-b border-fv-navy">
-            <span className="text-white/50">{isGoalkeeper ? 'Clean sheets' : 'Buts'}</span>
-            <span className="text-white font-bold ml-1">{isGoalkeeper ? (player.clean_sheets || '-') : (player.goals || '-')}</span>
+          <div className="flex justify-between items-center px-4 py-3 border-b border-fv-navy">
+            <span className="text-white/70 text-sm">{isGoalkeeper ? 'C. sheets' : 'Buts'}</span>
+            <span className="text-white font-bold text-xl">{isGoalkeeper ? (player.clean_sheets || '-') : (player.goals || '-')}</span>
           </div>
-          <div className="py-2 px-3 border-r border-fv-navy">
-            <span className="text-white/50">Âge</span>
-            <span className="text-white font-bold ml-1">{player.age || '-'}</span>
+          <div className="flex justify-between items-center px-4 py-3 border-r border-fv-navy">
+            <span className="text-white/70 text-sm">Âge</span>
+            <span className="text-white font-bold text-xl">{player.age || '-'}</span>
           </div>
-          <div className="py-2 px-3">
-            <span className="text-white/50">{isGoalkeeper ? 'Arrêts' : 'Passes décisives'}</span>
-            <span className="text-white font-bold ml-1">{isGoalkeeper ? (player.saves || '-') : (player.assists || '-')}</span>
+          <div className="flex justify-between items-center px-4 py-3">
+            <span className="text-white/70 text-sm">{isGoalkeeper ? 'Arrêts' : 'Passes'}</span>
+            <span className="text-white font-bold text-xl">{isGoalkeeper ? (player.saves || '-') : (player.assists || '-')}</span>
           </div>
         </div>
       </div>

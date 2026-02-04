@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 function Header() {
   const location = useLocation();
+  const isHomePage = location.pathname === '/';
   const isVotePage = location.pathname === '/vote';
   const [scrolled, setScrolled] = useState(false);
 
@@ -21,10 +22,10 @@ function Header() {
         {/* Logo typographique */}
         <Link to="/" className="group">
           <div className="flex items-baseline gap-0.5">
-            <span className="text-2xl font-heading font-black tracking-tight text-white">
+            <span className="text-xl sm:text-2xl font-heading font-black tracking-wide text-white">
               FOOT
             </span>
-            <span className="text-2xl font-heading font-black tracking-tight text-fv-green
+            <span className="text-xl sm:text-2xl font-heading font-black tracking-wide text-fv-green
                            group-hover:text-white transition-colors">
               VIBES
             </span>
@@ -35,22 +36,22 @@ function Header() {
         {isVotePage ? (
           <Link
             to="/classement"
-            className="bg-fv-green text-fv-navy font-bold
-                       px-5 py-2 rounded-full
+            className="bg-fv-green text-fv-navy font-bold text-sm sm:text-base
+                       px-4 sm:px-5 py-1.5 sm:py-2 rounded-full
                        hover:bg-fv-green-dark hover:scale-105
                        active:scale-95 transition-all duration-200"
           >
-            CLASSEMENT
+            Classement
           </Link>
         ) : (
           <Link
             to="/vote"
-            className="bg-fv-green text-fv-navy font-bold
-                       px-5 py-2 rounded-full
+            className="bg-fv-green text-fv-navy font-bold text-sm sm:text-base
+                       px-4 sm:px-5 py-1.5 sm:py-2 rounded-full
                        hover:bg-fv-green-dark hover:scale-105
                        active:scale-95 transition-all duration-200"
           >
-            VOTER
+            Voter
           </Link>
         )}
       </div>

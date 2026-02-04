@@ -11,10 +11,11 @@ export default {
         'fv-navy-light': '#1a2744',
         'fv-green': '#10B981',
         'fv-green-dark': '#059669',
+        'fv-gold': '#F5A623',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        heading: ['Montserrat', 'Inter', 'system-ui', 'sans-serif'],
+        heading: ['Bebas Neue', 'sans-serif'],
       },
       boxShadow: {
         'material-1': '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',

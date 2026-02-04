@@ -1,6 +1,6 @@
 # CLAUDE.md - Foot Vibes
 
-**Derniere mise a jour** : 2 fevrier 2026 (nuit)
+**Derniere mise a jour** : 4 fevrier 2026
 
 ---
 
@@ -15,6 +15,97 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 - **Frontend** : https://frontend-xtorbis-projects.vercel.app
 - **Backend API** : https://foot-vibes-api.onrender.com
 - **GitHub** : https://github.com/Xtorbi/foot-vibes
+
+### Session du 4 fevrier 2026
+
+**Refonte page d'accueil (Home.jsx)** :
+- Grand logo "FOOT VIBES" central (5xl a 7xl responsive)
+- Effet glow vert sur "VIBES" (text-shadow)
+- Header masque sur homepage (evite redite logo)
+- Header sticky qui apparait au scroll (> 80px) avec logo reduit + nav
+- Bouton "Voir le classement" ajoute a cote du CTA principal
+- Boutons CTA homogeneises (meme hauteur py-4, meme padding px-8)
+
+**Cartes clubs (ClubGrid.jsx)** :
+- Fond degrade aux couleurs de chaque club (opacite 30%/15%)
+- Disposition verticale : logo au-dessus du nom
+- Hover : bordure verte + glow vert (coherence logo VIBES)
+- Logos plus grands (w-12 h-12)
+
+**Couleurs clubs (config/clubs.js)** :
+- Ajout propriete `colors` pour chaque club (2 couleurs principales)
+- PSG (#004170, #DA291C), OM (#2FAEE0, #FFFFFF), Lyon (#1A3E8F, #E30613)...
+
+**Page Vote** :
+- Ajout message d'erreur visible si API indisponible
+- Bouton "Reessayer" pour recharger le joueur
+
+**Fichiers modifies** :
+- `frontend/src/pages/Home.jsx` : refonte complete hero + header sticky
+- `frontend/src/components/ClubGrid.jsx` : cartes avec fond degrade
+- `frontend/src/config/clubs.js` : couleurs clubs ajoutees
+- `frontend/src/pages/Vote.jsx` : gestion erreur API
+- `frontend/src/index.css` : classe `.logo-glow`
+- `frontend/src/App.jsx` : header masque sur homepage
+
+---
+
+### Session du 3 fevrier 2026 (soir)
+
+**Refonte carte joueur (PlayerCard.jsx)** :
+- Stats en tableau 2 colonnes : label a gauche, valeur a droite
+- Chiffres en blanc gras (`text-white font-bold text-xl`)
+- Plus d'espace vertical dans les stats (`py-3`)
+- Nom de famille plus grand (`text-2xl`)
+- Espace sous le club (`pb-6`)
+
+**Page Classement - nouveaux filtres** :
+- Filtre par periode : 7 jours / 30 jours / Toute la saison
+- Filtre par club : dropdown "Tous les clubs" + 18 clubs
+- Filtre par poste : dropdown "Tous les postes"
+- Toggle "Francais uniquement" : style iOS (rond blanc qui glisse)
+- Drapeaux nationalites affiches via flagcdn.com
+
+**Backend - nouveaux parametres API /ranking** :
+- `period` : week / month / (vide = saison)
+- `nationality` : filtre par nationalite (ex: "France")
+- Index ajoute sur `votes.voted_at` pour performances
+
+**Mapping nationalites (RankingTable.jsx)** :
+- ~100 nationalites mappees vers codes ISO (flagcdn.com)
+- Inclut variantes francaises : Angleterre, Argentine, Cameroun, Grece, Pologne, Tchequie
+
+**Tailwind config** :
+- Couleur `fv-gold` ajoutee (#F5A623)
+
+---
+
+### Session du 3 fevrier 2026 (matin)
+
+**Typographie titres** :
+- Font heading : **Bebas Neue** (condensee, bold, style sport/affiche)
+- Remplace Montserrat pour les titres
+- `tracking-wide` ajoute pour aerer les lettres
+- Fonts testees : Bebas Neue, Oswald, Anton, Russo One → Bebas Neue retenue
+
+**Ajustements design page Vote** :
+- Fond : nouveau style `bg-aurora-static` (gradient bleu/violet statique, sans animation)
+- Feedback vote : repositionne en overlay (ne decale plus la carte)
+- Fix blink au changement de joueur (reset player a null avant chargement)
+
+**Ajustements UI** :
+- CTA en minuscules : "Voter", "Classement", "Commencer a voter"
+- Stats carte joueur : "PD" remplace par "Passes D."
+
+**Styles de fond disponibles** (index.css) :
+- Statiques : `bg-deep`, `bg-glow`, `bg-corner`, `bg-dual`, `bg-aurora-static`
+- Animes : `bg-aurora`, `bg-mesh`, `bg-grid`, `bg-aurora-intense`
+
+**Configuration Tailwind** (tailwind.config.js) :
+- `fontFamily.heading` : Bebas Neue
+- `fontFamily.sans` : Inter
+
+---
 
 ### Session du 2 fevrier 2026 (soir)
 
@@ -72,11 +163,11 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 | Header | `src/components/Header.jsx` | OK | Navigation dynamique selon la page |
 | Page Home | `src/pages/Home.jsx` | OK | CTA Ligue 1 + grille des 18 clubs |
 | Page Vote | `src/pages/Vote.jsx` | OK | Interface de vote complete avec raccourcis clavier |
-| Page Classement | `src/pages/Ranking.jsx` | OK | Filtres par position, recherche, toggle mode |
+| Page Classement | `src/pages/Ranking.jsx` | OK | Filtres club, poste, periode, nationalite, recherche |
 | ClubGrid | `src/components/ClubGrid.jsx` | OK | Grille des 18 clubs cliquables |
 | PlayerCard | `src/components/PlayerCard.jsx` | OK | Carte joueur avec stats adaptees au poste |
 | VoteButtons | `src/components/VoteButtons.jsx` | OK | 3 boutons ronds (pouce bas/neutre/pouce haut) |
-| RankingTable | `src/components/RankingTable.jsx` | OK | Tableau classement avec rang, nom, club, score |
+| RankingTable | `src/components/RankingTable.jsx` | OK | Tableau classement avec rang, drapeau, nom, club, score |
 | ModeContext | `src/contexts/ModeContext.jsx` | OK | Gestion mode (L1/club) + compteur votes en localStorage |
 | API utils | `src/utils/api.js` | OK | Fonctions fetch pour l'API |
 
@@ -151,7 +242,7 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 
 - [ ] Swipe mobile (gauche/droite style Tinder)
 - [ ] Partage reseaux sociaux (Twitter/X, Instagram story)
-- [ ] Classements tendances (7 derniers jours, movers)
+- [x] Classements tendances (7 derniers jours, movers) - filtres periode implementes
 - [ ] Legendes historiques (anciens joueurs L1)
 - [ ] Authentification utilisateurs (v2.0)
 - [ ] Comparaison joueurs (face a face)
@@ -241,7 +332,7 @@ Billboard/
 | GET | /api/players/random | Joueur aleatoire pondere (recence + popularite) |
 | GET | /api/players | Liste joueurs filtree |
 | GET | /api/players/:id | Details joueur avec rang |
-| GET | /api/ranking | Classement avec filtres |
+| GET | /api/ranking | Classement avec filtres (club, position, period, nationality, search) |
 | GET | /api/contexts | Liste des modes (L1 + 18 clubs) |
 | POST | /api/vote | Enregistrer un vote |
 | GET | /api/health | Health check |
@@ -317,3 +408,11 @@ node scripts/importTransfermarkt.js
 | 2 fev 2026 (soir) | Deploiement : Backend sur Render, Frontend sur Vercel |
 | 2 fev 2026 (soir) | UI : bouton downvote rouge, logos clubs, boutons homogenes |
 | 2 fev 2026 (soir) | Design : style Aurora retenu (gradient anime subtil) |
+| 3 fev 2026 | Typo titres : Bebas Neue retenue (vs Oswald, Anton, Russo One) |
+| 3 fev 2026 | PlayerCard : stats en tableau 2 colonnes, nom agrandi |
+| 3 fev 2026 | Classement : filtres periode (7j/30j/saison), club, nationalite |
+| 3 fev 2026 | Drapeaux nationalites via flagcdn.com |
+| 3 fev 2026 | Toggle iOS pour filtre "Francais uniquement" |
+| 4 fev 2026 | Refonte homepage : grand logo + cartes clubs colorees |
+| 4 fev 2026 | Header sticky au scroll sur homepage |
+| 4 fev 2026 | Vert fv-green (#10B981) comme fil conducteur design |

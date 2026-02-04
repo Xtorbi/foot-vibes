@@ -2,24 +2,24 @@
 // Logos via Transfermarkt CDN
 
 const CLUBS = [
-  { id: 'psg', name: 'Paris SG', tmId: 583 },
-  { id: 'om', name: 'OM', tmId: 244 },
-  { id: 'lyon', name: 'Lyon', tmId: 1041 },
-  { id: 'monaco', name: 'Monaco', tmId: 162 },
-  { id: 'lille', name: 'Lille', tmId: 1082 },
-  { id: 'nice', name: 'Nice', tmId: 417 },
-  { id: 'lens', name: 'Lens', tmId: 826 },
-  { id: 'rennes', name: 'Rennes', tmId: 273 },
-  { id: 'brest', name: 'Brest', tmId: 3911 },
-  { id: 'strasbourg', name: 'Strasbourg', tmId: 667 },
-  { id: 'toulouse', name: 'Toulouse', tmId: 415 },
-  { id: 'nantes', name: 'Nantes', tmId: 995 },
-  { id: 'lehavre', name: 'Le Havre', tmId: 738 },
-  { id: 'auxerre', name: 'Auxerre', tmId: 290 },
-  { id: 'angers', name: 'Angers', tmId: 1420 },
-  { id: 'lorient', name: 'Lorient', tmId: 1158 },
-  { id: 'parisfc', name: 'Paris FC', tmId: 10004 },
-  { id: 'metz', name: 'Metz', tmId: 347 },
+  { id: 'psg', name: 'Paris SG', tmId: 583, colors: ['#004170', '#DA291C'] },
+  { id: 'om', name: 'OM', tmId: 244, colors: ['#2FAEE0', '#FFFFFF'] },
+  { id: 'lyon', name: 'Lyon', tmId: 1041, colors: ['#1A3E8F', '#E30613'] },
+  { id: 'monaco', name: 'Monaco', tmId: 162, colors: ['#E30613', '#FFFFFF'] },
+  { id: 'lille', name: 'Lille', tmId: 1082, colors: ['#E30613', '#1A1A1A'] },
+  { id: 'nice', name: 'Nice', tmId: 417, colors: ['#E30613', '#1A1A1A'] },
+  { id: 'lens', name: 'Lens', tmId: 826, colors: ['#FFD700', '#E30613'] },
+  { id: 'rennes', name: 'Rennes', tmId: 273, colors: ['#E30613', '#1A1A1A'] },
+  { id: 'brest', name: 'Brest', tmId: 3911, colors: ['#E30613', '#FFFFFF'] },
+  { id: 'strasbourg', name: 'Strasbourg', tmId: 667, colors: ['#1E90FF', '#FFFFFF'] },
+  { id: 'toulouse', name: 'Toulouse', tmId: 415, colors: ['#6B2D8B', '#FFFFFF'] },
+  { id: 'nantes', name: 'Nantes', tmId: 995, colors: ['#FCDD09', '#2D8C3C'] },
+  { id: 'lehavre', name: 'Le Havre', tmId: 738, colors: ['#1E90FF', '#87CEEB'] },
+  { id: 'auxerre', name: 'Auxerre', tmId: 290, colors: ['#1E3A8A', '#FFFFFF'] },
+  { id: 'angers', name: 'Angers', tmId: 1420, colors: ['#1A1A1A', '#FFFFFF'] },
+  { id: 'lorient', name: 'Lorient', tmId: 1158, colors: ['#F97316', '#1A1A1A'] },
+  { id: 'parisfc', name: 'Paris FC', tmId: 10004, colors: ['#1E3A8A', '#E30613'] },
+  { id: 'metz', name: 'Metz', tmId: 347, colors: ['#8B0000', '#FFFFFF'] },
 ];
 
 // Génère l'URL du logo Transfermarkt
@@ -58,5 +58,7 @@ const CLUB_ALIASES = {
 Object.entries(CLUB_ALIASES).forEach(([fullName, id]) => {
   CLUB_LOGOS[fullName] = CLUB_LOGOS[id];
 });
+
+export const CLUB_NAMES = Object.keys(CLUB_ALIASES);
 
 export default CLUBS;

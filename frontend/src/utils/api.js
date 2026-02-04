@@ -23,12 +23,14 @@ export async function submitVote(playerId, vote, context) {
   return res.json();
 }
 
-export async function fetchRanking({ context, position, club, search, limit = 50, offset = 0 }) {
+export async function fetchRanking({ context, position, club, search, period, nationality, limit = 50, offset = 0 }) {
   const params = new URLSearchParams();
   if (context) params.set('context', context);
   if (position) params.set('position', position);
   if (club) params.set('club', club);
   if (search) params.set('search', search);
+  if (period) params.set('period', period);
+  if (nationality) params.set('nationality', nationality);
   params.set('limit', String(limit));
   params.set('offset', String(offset));
   const res = await fetch(`${API_BASE}/ranking?${params}`);

@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react';
-import { useMode } from '../contexts/ModeContext';
 import RankingTable from '../components/RankingTable';
 import { fetchRanking } from '../utils/api';
+import { CLUB_NAMES } from '../config/clubs';
 
-const POSITIONS = ['Tous', 'Gardien', 'Defenseur', 'Milieu', 'Attaquant'];
+const PERIODS = [
+  { id: 'week', label: '7 jours' },
+  { id: 'month', label: '30 jours' },
+  { id: 'season', label: 'Toute la saison' },
+];
 
 function Ranking() {
-  const { mode } = useMode();
   const [players, setPlayers] = useState([]);
   const [total, setTotal] = useState(0);
+  const [clubFilter, setClubFilter] = useState('');
   const [positionFilter, setPositionFilter] = useState('Tous');
+  const [periodFilter, setPeriodFilter] = useState('season');
+  const [frenchOnly, setFrenchOnly] = useState(false);
   const [search, setSearch] = useState('');
-  const [context, setContext] = useState(mode);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,8 +24,10 @@ function Ranking() {
       setLoading(true);
       try {
         const data = await fetchRanking({
-          context,
+          club: clubFilter || undefined,
           position: positionFilter === 'Tous' ? undefined : positionFilter,
+          period: periodFilter === 'season' ? undefined : periodFilter,
+          nationality: frenchOnly ? 'France' : undefined,
           search: search || undefined,
         });
         setPlayers(data.players);
@@ -32,61 +39,88 @@ function Ranking() {
       }
     };
     load();
-  }, [context, positionFilter, search]);
+  }, [clubFilter, positionFilter, periodFilter, frenchOnly, search]);
 
   return (
     <main className="container mx-auto px-4 py-6 max-w-4xl">
-      {/* Mode toggle */}
-      <div className="flex gap-3 mb-4 animate-fade-in-up">
-        <button
-          onClick={() => setContext('ligue1')}
-          className={`px-4 py-2 rounded-xl font-semibold transition-all duration-200 ${
-            context === 'ligue1'
-              ? 'bg-fv-green text-fv-navy'
-              : 'bg-white/5 text-white/60 border border-white/10 hover:bg-white/10 hover:text-white'
-          }`}
+      {/* Ligne 1: Club + Position (dropdowns) + Toggle Français */}
+      <div className="flex flex-wrap items-center gap-3 mb-4 animate-fade-in-up">
+        {/* Club dropdown */}
+        <select
+          value={clubFilter}
+          onChange={(e) => setClubFilter(e.target.value)}
+          className="px-3 py-2 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200
+                     bg-fv-navy border border-white/10 text-white
+                     focus:outline-none focus:border-fv-green/50
+                     [&>option]:bg-fv-navy [&>option]:text-white"
+          style={{ colorScheme: 'dark' }}
         >
-          Global L1
-        </button>
-        {mode !== 'ligue1' && (
-          <button
-            onClick={() => setContext(mode)}
-            className={`px-4 py-2 rounded-xl font-semibold transition-all duration-200 ${
-              context === mode
-                ? 'bg-fv-green text-fv-navy'
-                : 'bg-white/5 text-white/60 border border-white/10 hover:bg-white/10 hover:text-white'
+          <option value="">Tous les clubs</option>
+          {CLUB_NAMES.map((name) => (
+            <option key={name} value={name}>{name}</option>
+          ))}
+        </select>
+
+        {/* Position dropdown */}
+        <select
+          value={positionFilter}
+          onChange={(e) => setPositionFilter(e.target.value)}
+          className="px-3 py-2 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200
+                     bg-fv-navy border border-white/10 text-white
+                     focus:outline-none focus:border-fv-green/50
+                     [&>option]:bg-fv-navy [&>option]:text-white"
+          style={{ colorScheme: 'dark' }}
+        >
+          <option value="Tous">Tous les postes</option>
+          <option value="Gardien">Gardien</option>
+          <option value="Defenseur">Défenseur</option>
+          <option value="Milieu">Milieu</option>
+          <option value="Attaquant">Attaquant</option>
+        </select>
+
+        {/* Toggle Français - iOS style */}
+        <label className="flex items-center gap-2 cursor-pointer select-none ml-auto">
+          <span className="text-sm text-white/60">🇫🇷 Français uniquement</span>
+          <div
+            onClick={() => setFrenchOnly(!frenchOnly)}
+            className={`relative w-11 h-6 rounded-full transition-colors duration-200 ${
+              frenchOnly ? 'bg-fv-green' : 'bg-white/20'
             }`}
           >
-            {mode.toUpperCase()}
-          </button>
-        )}
+            <div
+              className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-200 ${
+                frenchOnly ? 'translate-x-5' : 'translate-x-0'
+              }`}
+            />
+          </div>
+        </label>
       </div>
 
-      {/* Position filters */}
-      <div className="flex gap-2 mb-4 flex-wrap animate-fade-in-up" style={{ animationDelay: '50ms' }}>
-        {POSITIONS.map((pos) => (
+      {/* Ligne 2: Période */}
+      <div className="flex gap-1.5 sm:gap-2 mb-4 flex-wrap animate-fade-in-up" style={{ animationDelay: '50ms' }}>
+        {PERIODS.map((p) => (
           <button
-            key={pos}
-            onClick={() => setPositionFilter(pos)}
-            className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
-              positionFilter === pos
+            key={p.id}
+            onClick={() => setPeriodFilter(p.id)}
+            className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 ${
+              periodFilter === p.id
                 ? 'bg-fv-green/20 text-fv-green border border-fv-green/30'
                 : 'bg-white/5 text-white/50 border border-white/10 hover:bg-white/10 hover:text-white/70'
             }`}
           >
-            {pos}
+            {p.label}
           </button>
         ))}
       </div>
 
-      {/* Search */}
+      {/* Ligne 4: Recherche */}
       <input
         type="text"
         placeholder="Rechercher un joueur..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl mb-6
-                   text-white placeholder-white/30
+        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-xl mb-4 sm:mb-6
+                   text-sm sm:text-base text-white placeholder-white/30
                    focus:outline-none focus:border-fv-green/50 focus:bg-white/10
                    transition-all duration-200 animate-fade-in-up"
         style={{ animationDelay: '100ms' }}

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Montserrat:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -143,6 +143,70 @@ button:focus-visible, a:focus-visible {
 
 .animate-bounce-in {
   animation: bounce-in 0.5s ease-out forwards;
+}
+
+/* ===== Exit animations pour le vote ===== */
+
+@keyframes exitLeft {
+  0% {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-100px) rotate(-10deg);
+  }
+}
+
+@keyframes exitRight {
+  0% {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100px) rotate(10deg);
+  }
+}
+
+@keyframes exitDown {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+}
+
+.animate-exit-left {
+  animation: exitLeft 0.25s ease-out forwards;
+}
+
+.animate-exit-right {
+  animation: exitRight 0.25s ease-out forwards;
+}
+
+.animate-exit-down {
+  animation: exitDown 0.25s ease-out forwards;
+}
+
+/* Vote flash - feedback immédiat */
+@keyframes voteFlash {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-vote-flash {
+  animation: voteFlash 0.3s ease-out forwards;
 }
 
 /* ===== BACKGROUND STYLES ===== */
@@ -346,4 +410,78 @@ button:focus-visible, a:focus-visible {
 .bg-aurora > *, .bg-mesh > *, .bg-grid > * {
   position: relative;
   z-index: 1;
+}
+
+/* ===== NOUVEAUX FONDS STATIQUES (style CodeWiki) ===== */
+
+/* Option A: Deep Space - Minimaliste sombre */
+.bg-deep {
+  background: linear-gradient(145deg, #0a0a0f 0%, #111118 50%, #0d0d12 100%);
+}
+
+/* Option B: Subtle Glow - Halo central */
+.bg-glow {
+  background: radial-gradient(ellipse at 50% 30%, #1a1a2e 0%, #0f0f18 50%, #0a0a0f 100%);
+}
+
+/* Option C: Corner Accent - Accent vert subtil en coin */
+.bg-corner {
+  background:
+    radial-gradient(ellipse at 80% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #0a0a0f 0%, #12121a 100%);
+}
+
+/* Option D: Dual Glow - Double accent opposé */
+.bg-dual {
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
+    #0a0a0f;
+}
+
+/* Option E: Aurora Static - Gradient bleu/violet statique (renforce +10%) */
+.bg-aurora-static {
+  background: linear-gradient(
+    135deg,
+    #0d1424 0%,
+    #252058 35%,
+    #1c2d63 65%,
+    #0d1424 100%
+  );
+}
+
+/* ===== Feedback overlay animation ===== */
+@keyframes feedbackFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes feedbackFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+}
+
+.animate-feedback-in {
+  animation: feedbackFadeIn 0.2s ease-out forwards;
+}
+
+.animate-feedback-out {
+  animation: feedbackFadeOut 0.2s ease-out forwards;
+}
+
+/* ===== Logo glow effect ===== */
+.logo-glow {
+  text-shadow: 0 0 30px rgba(16, 185, 129, 0.5), 0 0 60px rgba(16, 185, 129, 0.3);
 }

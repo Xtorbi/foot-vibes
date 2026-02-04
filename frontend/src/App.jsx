@@ -8,11 +8,12 @@ import Ranking from './pages/Ranking';
 
 function AppContent() {
   const location = useLocation();
+  const isHomePage = location.pathname === '/';
   const isVotePage = location.pathname === '/vote';
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0f1629]">
-      <Header />
+      {!isHomePage && <Header />}
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
