@@ -17,62 +17,53 @@ const MILESTONES = {
 
 function Vote() {
   const { mode, voteCount, incrementVoteCount } = useMode();
-  const [player, setPlayer] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [stack, setStack] = useState([]);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [feedback, setFeedback] = useState(null);
   const [celebration, setCelebration] = useState({ trigger: 0, message: '' });
   const [exitDirection, setExitDirection] = useState(null);
-  const [voteFlash, setVoteFlash] = useState(null);
-  const [showCard, setShowCard] = useState(false);
   const [error, setError] = useState(null);
 
-  // Utiliser une ref pour les IDs votés (pas de re-render)
   const votedIdsRef = useRef([]);
 
-  const loadPlayer = async () => {
-    setLoading(true);
-    setShowCard(false);
-    setError(null);
-    try {
-      const data = await fetchRandomPlayer(mode, votedIdsRef.current);
-      setPlayer(data);
-      // Petit délai avant d'afficher pour éviter le flash
-      setTimeout(() => setShowCard(true), 50);
-    } catch (err) {
-      console.error('Erreur chargement joueur:', err);
-      setError('Impossible de charger le joueur. Vérifie que le backend est démarré.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Charger le premier joueur au montage ou changement de mode
+  // Charger les 2 premiers joueurs au montage / changement de mode
   useEffect(() => {
-    votedIdsRef.current = [];
-    loadPlayer();
+    const init = async () => {
+      votedIdsRef.current = [];
+      setStack([]);
+      setInitialLoading(true);
+      setError(null);
+      try {
+        const first = await fetchRandomPlayer(mode, []);
+        // Charger le 2e en parallèle sans bloquer l'affichage
+        setStack([first]);
+        setInitialLoading(false);
+        const second = await fetchRandomPlayer(mode, [first.id]);
+        setStack([first, second]);
+      } catch (err) {
+        console.error('Erreur chargement joueurs:', err);
+        setError('Impossible de charger les joueurs. Vérifie que le backend est démarré.');
+      } finally {
+        setInitialLoading(false);
+      }
+    };
+    init();
   }, [mode]);
 
   const handleVote = async (voteType) => {
-    if (!player || exitDirection) return;
+    if (stack.length === 0 || exitDirection) return;
 
-    // Flash coloré immédiat
-    setVoteFlash(voteType);
-
-    // Déclencher l'animation de sortie après un court délai
-    setTimeout(() => {
-      const direction = voteType === 'up' ? 'right' : voteType === 'down' ? 'left' : 'down';
-      setExitDirection(direction);
-    }, 150);
+    const currentPlayer = stack[0];
+    const direction = voteType === 'up' ? 'right' : voteType === 'down' ? 'left' : 'down';
+    setExitDirection(direction);
 
     try {
-      const result = await submitVote(player.id, voteType, mode);
+      const result = await submitVote(currentPlayer.id, voteType, mode);
       const newCount = voteCount + 1;
       incrementVoteCount();
 
-      // Ajouter à la ref
-      votedIdsRef.current = [...votedIdsRef.current, player.id];
+      votedIdsRef.current = [...votedIdsRef.current, currentPlayer.id];
 
-      // Vérifier si on atteint un milestone
       if (MILESTONES[newCount]) {
         setCelebration({ trigger: Date.now(), message: MILESTONES[newCount] });
       }
@@ -82,16 +73,25 @@ function Vote() {
         setTimeout(() => setFeedback(null), 2000);
       }
 
-      // Attendre la fin de l'animation avant de charger le suivant
+      // Attendre la fin de l'animation de sortie
       setTimeout(() => {
+        // Promouvoir la carte suivante (batché par React)
         setExitDirection(null);
-        setVoteFlash(null);
-        loadPlayer();
-      }, 400);
+        setStack(prev => prev.slice(1));
+
+        // Charger le prochain joueur en arrière-plan
+        const remainingIds = stack.slice(1).map(p => p.id);
+        fetchRandomPlayer(mode, [...votedIdsRef.current, ...remainingIds])
+          .then(newPlayer => {
+            if (newPlayer) {
+              setStack(prev => [...prev, newPlayer]);
+            }
+          })
+          .catch(() => {});
+      }, 250);
     } catch (err) {
       console.error('Erreur vote:', err);
       setExitDirection(null);
-      setVoteFlash(null);
     }
   };
 
@@ -103,9 +103,11 @@ function Vote() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [player]);
+  }, [stack, exitDirection]);
 
   const bgStyle = 'bg-vibes';
+  const currentPlayer = stack[0];
+  const nextPlayer = stack[1];
 
   return (
     <main className={`h-[calc(100vh-64px)] ${bgStyle} px-4 flex flex-col justify-center`}>
@@ -115,25 +117,41 @@ function Vote() {
           <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-6 text-center">
             <p className="text-red-400 mb-4">{error}</p>
             <button
-              onClick={loadPlayer}
+              onClick={() => window.location.reload()}
               className="bg-fv-green text-fv-navy font-bold px-6 py-2 rounded-full hover:bg-fv-green-dark transition-colors"
             >
               Réessayer
             </button>
           </div>
-        ) : loading || !showCard || !player ? (
+        ) : initialLoading || !currentPlayer ? (
           <PlayerCardSkeleton />
         ) : (
           <div className="relative">
-            <PlayerCard
-              key={player?.id}
-              player={player}
-              animate
-              exitDirection={exitDirection}
-              voteFlash={voteFlash}
-              voteCount={player?.total_votes}
-            />
-            <VoteButtons onVote={handleVote} disabled={loading || exitDirection} />
+            {/* Pile de cartes */}
+            <div className="relative">
+              {/* Carte du dessous (joueur suivant) - absolute derrière, visible seulement pendant l'exit */}
+              {nextPlayer && (
+                <div className={`absolute inset-x-0 top-0 transition-opacity duration-150 ${exitDirection ? 'opacity-100' : 'opacity-0'}`}>
+                  <PlayerCard
+                    key={nextPlayer.id}
+                    player={nextPlayer}
+                    voteCount={nextPlayer.total_votes}
+                  />
+                </div>
+              )}
+
+              {/* Carte du dessus (joueur actuel) - relative, maintient la taille */}
+              <div className="relative z-10">
+                <PlayerCard
+                  key={currentPlayer.id}
+                  player={currentPlayer}
+                  exitDirection={exitDirection}
+                  voteCount={currentPlayer.total_votes}
+                />
+              </div>
+            </div>
+
+            <VoteButtons onVote={handleVote} disabled={!!exitDirection} />
 
             <p className="text-center text-white/40 text-sm mt-4">
               Mes votes : {voteCount}
