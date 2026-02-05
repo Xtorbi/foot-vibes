@@ -186,6 +186,7 @@ function getRanking(req, res) {
       SELECT p.*,
         COALESCE(SUM(CASE WHEN v.vote_type = 'up' THEN 1 WHEN v.vote_type = 'down' THEN -1 ELSE 0 END), 0) as period_score,
         COUNT(v.id) as period_votes,
+        COUNT(DISTINCT v.voter_ip) as unique_voters,
         ROW_NUMBER() OVER (ORDER BY COALESCE(SUM(CASE WHEN v.vote_type = 'up' THEN 1 WHEN v.vote_type = 'down' THEN -1 ELSE 0 END), 0) DESC) as rank
       FROM players p
       LEFT JOIN votes v ON p.id = v.player_id AND v.voted_at >= ${dateFilter}
@@ -203,7 +204,9 @@ function getRanking(req, res) {
   } else {
     // Score total (comportement actuel)
     query = `
-      SELECT *, ROW_NUMBER() OVER (ORDER BY score DESC) as rank
+      SELECT *,
+        ROW_NUMBER() OVER (ORDER BY score DESC) as rank,
+        (SELECT COUNT(DISTINCT voter_ip) FROM votes WHERE player_id = players.id) as unique_voters
       FROM players
       WHERE source_season = ?
         AND archived = 0

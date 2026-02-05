@@ -4,6 +4,9 @@ const { CURRENT_SEASON } = require('../config/clubs');
 function handleVote(req, res) {
   const { player_id, vote, context = 'ligue1' } = req.body;
 
+  // Récupérer l'IP du votant (compatible proxies comme Render/Vercel)
+  const voterIp = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.ip || 'unknown';
+
   // Validation
   if (!player_id || !['up', 'neutral', 'down'].includes(vote)) {
     return res.status(400).json({ error: 'Parametres invalides' });
@@ -26,8 +29,8 @@ function handleVote(req, res) {
   const oldRank = oldRankRow ? oldRankRow.rank : 1;
 
   // Record vote
-  runSql('INSERT INTO votes (player_id, vote_type, context) VALUES (?, ?, ?)',
-    [player_id, vote, context]);
+  runSql('INSERT INTO votes (player_id, vote_type, context, voter_ip) VALUES (?, ?, ?, ?)',
+    [player_id, vote, context, voterIp]);
 
   // Update player scores
   const column = vote === 'up' ? 'upvotes' : vote === 'down' ? 'downvotes' : 'neutral_votes';

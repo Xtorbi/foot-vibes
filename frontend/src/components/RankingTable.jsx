@@ -343,6 +343,7 @@ function RankingTable({ players }) {
             <th className="py-2 sm:py-3 px-2 sm:px-3">Joueur</th>
             <th className="py-2 sm:py-3 px-2 sm:px-3 hidden sm:table-cell">Club</th>
             <th className="py-2 sm:py-3 px-2 sm:px-3 hidden md:table-cell">Poste</th>
+            <th className="py-2 sm:py-3 px-2 sm:px-3 hidden sm:table-cell text-center">Votants</th>
             <th className="py-2 sm:py-3 px-2 sm:px-3 text-right">Score</th>
           </tr>
         </thead>
@@ -373,6 +374,7 @@ function RankingTable({ players }) {
               </td>
               <td className="py-2 sm:py-3 px-2 sm:px-3 text-white/50 hidden sm:table-cell">{player.club}</td>
               <td className="py-2 sm:py-3 px-2 sm:px-3 text-white/50 hidden md:table-cell">{player.position}</td>
+              <td className="py-2 sm:py-3 px-2 sm:px-3 text-white/60 hidden sm:table-cell text-center">{player.unique_voters || 0}</td>
               <td className="py-2 sm:py-3 px-2 sm:px-3 text-right font-bold">
                 <span className={`inline-block px-1.5 sm:px-2 py-0.5 rounded text-xs sm:text-sm ${
                   player.score > 0 ? 'bg-emerald-500/20 text-emerald-400' :

@@ -125,6 +125,14 @@ async function initDb() {
   db.run(`CREATE INDEX IF NOT EXISTS idx_votes_context ON votes(context)`);
   db.run(`CREATE INDEX IF NOT EXISTS idx_votes_date ON votes(voted_at)`);
 
+  // Migration: ajouter colonne voter_ip si elle n'existe pas
+  const votesColumns = db.exec("PRAGMA table_info(votes)");
+  const votesColumnNames = votesColumns.length > 0 ? votesColumns[0].values.map(row => row[1]) : [];
+  if (!votesColumnNames.includes('voter_ip')) {
+    db.run(`ALTER TABLE votes ADD COLUMN voter_ip TEXT`);
+  }
+  db.run(`CREATE INDEX IF NOT EXISTS idx_votes_ip ON votes(player_id, voter_ip)`);
+
   saveDb();
   return db;
 }
