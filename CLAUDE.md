@@ -16,6 +16,34 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 - **Backend API** : https://foot-vibes-api.onrender.com
 - **GitHub** : https://github.com/Xtorbi/foot-vibes
 
+### Session du 5 fevrier 2026 - UI filtres classement
+
+**Filtres sur une ligne (Ranking.jsx)** :
+- Tous les filtres fusionnes sur une seule ligne desktop (dropdowns + periode + toggle FR)
+- `flex-wrap` pour passer a la ligne sur mobile si necessaire
+- Gap reduit sur mobile (`gap-2 sm:gap-3`)
+
+**Dropdowns custom** :
+- Fleche SVG custom (chevron blanc) positionnee a `0.4rem` du bord droit
+- `appearance-none` pour supprimer la fleche native
+- Dropdown clubs : largeur fixe `w-[145px]` + `truncate` (noms longs coupes)
+- Dropdown postes : largeur auto (affiche "Tous les postes" en entier)
+
+**Noms de clubs raccourcis** :
+- "RC Strasbourg Alsace" → "RC Strasbourg" (affichage uniquement)
+- "Stade Brestois 29" → "Stade Brestois" (affichage uniquement)
+- Mapping `CLUB_DISPLAY_NAMES` dans `config/clubs.js`
+- Valeur du filtre reste le nom complet (compatibilite BDD)
+
+**Toggle renomme** :
+- "Français uniquement" → "Joueurs FR" (plus compact)
+
+**Fichiers modifies** :
+- `frontend/src/pages/Ranking.jsx` : layout filtres, dropdowns custom
+- `frontend/src/config/clubs.js` : CLUB_DISPLAY_NAMES, getClubDisplayName()
+
+---
+
 ### Session du 5 fevrier 2026 - Swipe mobile + Fix double-clic
 
 **Swipe mobile implemente (Vote.jsx)** :

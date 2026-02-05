@@ -273,12 +273,22 @@ function getRanking(req, res) {
   const row = queryOne(countQuery, countParams);
   const total = row ? row.total : 0;
 
+  // Compter le total de votants uniques pour la période
+  let totalUniqueVotersQuery;
+  if (dateFilter) {
+    totalUniqueVotersQuery = `SELECT COUNT(DISTINCT voter_ip) as count FROM votes WHERE voted_at >= ${dateFilter}`;
+  } else {
+    totalUniqueVotersQuery = `SELECT COUNT(DISTINCT voter_ip) as count FROM votes`;
+  }
+  const uniqueVotersRow = queryOne(totalUniqueVotersQuery);
+  const totalUniqueVoters = uniqueVotersRow ? uniqueVotersRow.count : 0;
+
   // Pour les résultats avec période, utiliser period_score comme score
   const result = dateFilter
     ? players.map(p => ({ ...p, score: p.period_score, total_votes: p.period_votes }))
     : players;
 
-  res.json({ players: result, total });
+  res.json({ players: result, total, total_unique_voters: totalUniqueVoters });
 }
 
 function getContexts(req, res) {
