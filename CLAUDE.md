@@ -57,6 +57,23 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 
 ---
 
+### Session du 5 fevrier 2026 - Fix UX vote
+
+**Feedback overlay supprime (Vote.jsx)** :
+- Le message feedback ("Ce joueur monte au classement") bloquait les clics (restait 2s, boutons reactives apres 250ms)
+- Supprime state `feedback`, le bloc `setFeedback` dans handleVote, et le JSX overlay
+- Les milestones (Confetti) restent fonctionnels
+
+**Bouton neutre redesigne (VoteButtons.jsx)** :
+- Remplace le "?" par un pouce horizontal (rotate -90°) pour symboliser la stabilite
+- Meme SVG que le pouce haut, tourne vers la gauche
+
+**Fichiers modifies** :
+- `frontend/src/pages/Vote.jsx` : supprime feedback overlay
+- `frontend/src/components/VoteButtons.jsx` : bouton neutre pouce horizontal
+
+---
+
 ### Session du 5 fevrier 2026 - Nettoyage animations vote
 
 **Nettoyage effectue** :
