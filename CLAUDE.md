@@ -64,7 +64,9 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 - Requete "saison" : sous-requete `COUNT(DISTINCT voter_ip)` par joueur
 - Requete "periode" (7j/30j) : `COUNT(DISTINCT v.voter_ip)` dans le JOIN
 
-**Note** : Les votes existants ont `voter_ip = NULL`, comptes comme 1 valeur distincte (sous-estimation acceptable)
+**Note** : Les votes existants ont `voter_ip = NULL`, comptes comme 0 votants (seuls les nouveaux votes incrementent)
+
+**Teste en local** : Vote sur Nuno Mendes → unique_voters passe de 0 a 1, IP enregistree OK
 
 **Fichiers modifies** :
 - `backend/models/database.js` : migration colonne voter_ip + index
