@@ -22,8 +22,52 @@ function Vote() {
   const [celebration, setCelebration] = useState({ trigger: 0, message: '' });
   const [exitDirection, setExitDirection] = useState(null);
   const [error, setError] = useState(null);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   const votedIdsRef = useRef([]);
+  const isVotingRef = useRef(false);
+  const touchStart = useRef({ x: 0, y: 0 });
+  const isDragging = useRef(false);
+
+  const SWIPE_THRESHOLD_X = 80;
+  const SWIPE_THRESHOLD_Y = 60;
+
+  const handleTouchStart = (e) => {
+    if (exitDirection) return;
+    const touch = e.touches[0];
+    touchStart.current = { x: touch.clientX, y: touch.clientY };
+    isDragging.current = true;
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging.current || exitDirection) return;
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - touchStart.current.x;
+    const deltaY = touch.clientY - touchStart.current.y;
+    setDragOffset({ x: deltaX, y: deltaY });
+  };
+
+  const handleTouchEnd = () => {
+    if (!isDragging.current || exitDirection) return;
+    isDragging.current = false;
+    const { x, y } = dragOffset;
+    const absX = Math.abs(x);
+    const absY = Math.abs(y);
+
+    // Determine dominant direction
+    if (absX > absY && absX > SWIPE_THRESHOLD_X) {
+      // Horizontal swipe
+      setDragOffset({ x: 0, y: 0 });
+      handleVote(x > 0 ? 'up' : 'down');
+    } else if (absY > absX && y > SWIPE_THRESHOLD_Y) {
+      // Swipe down only (y > 0 = vers le bas)
+      setDragOffset({ x: 0, y: 0 });
+      handleVote('neutral');
+    } else {
+      // Snap back
+      setDragOffset({ x: 0, y: 0 });
+    }
+  };
 
   // Charger les 2 premiers joueurs au montage / changement de mode
   useEffect(() => {
@@ -50,10 +94,12 @@ function Vote() {
   }, [mode]);
 
   const handleVote = async (voteType) => {
-    if (stack.length === 0 || exitDirection) return;
+    if (stack.length === 0 || isVotingRef.current) return;
+    isVotingRef.current = true;
 
     const currentPlayer = stack[0];
     const direction = voteType === 'up' ? 'right' : voteType === 'down' ? 'left' : 'down';
+    setDragOffset({ x: 0, y: 0 });
     setExitDirection(direction);
 
     try {
@@ -70,6 +116,7 @@ function Vote() {
       // Attendre la fin de l'animation de sortie
       setTimeout(() => {
         // Promouvoir la carte suivante (batché par React)
+        isVotingRef.current = false;
         setExitDirection(null);
         setStack(prev => prev.slice(1));
 
@@ -85,6 +132,7 @@ function Vote() {
       }, 250);
     } catch (err) {
       console.error('Erreur vote:', err);
+      isVotingRef.current = false;
       setExitDirection(null);
     }
   };
@@ -125,7 +173,7 @@ function Vote() {
             <div className="relative">
               {/* Carte du dessous (joueur suivant) - absolute derrière, visible seulement pendant l'exit */}
               {nextPlayer && (
-                <div className={`absolute inset-x-0 top-0 transition-opacity duration-150 ${exitDirection ? 'opacity-100' : 'opacity-0'}`}>
+                <div className={`absolute inset-x-0 top-0 transition-opacity duration-150 ${exitDirection || (dragOffset.x !== 0 || dragOffset.y !== 0) ? 'opacity-100' : 'opacity-0'}`}>
                   <PlayerCard
                     key={nextPlayer.id}
                     player={nextPlayer}
@@ -135,7 +183,38 @@ function Vote() {
               )}
 
               {/* Carte du dessus (joueur actuel) - relative, maintient la taille */}
-              <div className="relative z-10">
+              <div
+                className="relative z-10 touch-none"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                style={{
+                  transform: exitDirection
+                    ? undefined
+                    : `translateX(${dragOffset.x}px) translateY(${dragOffset.y}px) rotate(${dragOffset.x * 0.1}deg)`,
+                  transition: exitDirection
+                    ? undefined
+                    : dragOffset.x === 0 && dragOffset.y === 0
+                      ? 'transform 0.3s ease'
+                      : 'none',
+                }}
+              >
+                {/* Indicateur visuel de direction pendant le drag */}
+                {!exitDirection && (dragOffset.x !== 0 || dragOffset.y !== 0) && (
+                  <div
+                    className="absolute inset-0 z-20 rounded-2xl pointer-events-none"
+                    style={{
+                      boxShadow:
+                        Math.abs(dragOffset.x) > Math.abs(dragOffset.y)
+                          ? dragOffset.x > 0
+                            ? `inset 0 0 ${Math.min(Math.abs(dragOffset.x) * 0.4, 30)}px rgba(16, 185, 129, ${Math.min(Math.abs(dragOffset.x) / SWIPE_THRESHOLD_X, 1) * 0.6})`
+                            : `inset 0 0 ${Math.min(Math.abs(dragOffset.x) * 0.4, 30)}px rgba(239, 68, 68, ${Math.min(Math.abs(dragOffset.x) / SWIPE_THRESHOLD_X, 1) * 0.6})`
+                          : dragOffset.y > 0
+                            ? `inset 0 0 ${Math.min(dragOffset.y * 0.4, 30)}px rgba(255, 255, 255, ${Math.min(dragOffset.y / SWIPE_THRESHOLD_Y, 1) * 0.4})`
+                            : 'none',
+                    }}
+                  />
+                )}
                 <PlayerCard
                   key={currentPlayer.id}
                   player={currentPlayer}
@@ -151,6 +230,9 @@ function Vote() {
               Mes votes : {voteCount}
             </p>
 
+            <p className="sm:hidden text-center text-white/20 text-[10px] mt-4">
+              Swipe la carte pour voter
+            </p>
             <p className="hidden sm:block text-center text-white/20 text-[10px] mt-4">
               ← → pour voter · ↓ pour passer
             </p>
