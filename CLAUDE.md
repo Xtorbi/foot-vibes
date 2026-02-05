@@ -48,6 +48,32 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 
 ---
 
+### Session du 5 fevrier 2026 - Votants uniques au classement
+
+**Colonne "Votants" ajoutee au classement** :
+- Affiche le nombre de votants uniques (par IP) pour chaque joueur
+- Visible sur ecrans sm: et plus (cachee sur tres petit mobile)
+- Positionnee entre "Poste" et "Score"
+
+**Backend - Stockage IP votant** :
+- Nouvelle colonne `voter_ip` dans la table `votes` (migration auto au demarrage)
+- IP recuperee via `x-forwarded-for` (compatible proxies Render/Vercel) ou `req.ip`
+- Index `idx_votes_ip` sur `(player_id, voter_ip)` pour optimiser les COUNT DISTINCT
+
+**Backend - API ranking modifiee** :
+- Requete "saison" : sous-requete `COUNT(DISTINCT voter_ip)` par joueur
+- Requete "periode" (7j/30j) : `COUNT(DISTINCT v.voter_ip)` dans le JOIN
+
+**Note** : Les votes existants ont `voter_ip = NULL`, comptes comme 1 valeur distincte (sous-estimation acceptable)
+
+**Fichiers modifies** :
+- `backend/models/database.js` : migration colonne voter_ip + index
+- `backend/controllers/votesController.js` : stockage IP votant
+- `backend/controllers/playersController.js` : unique_voters dans getRanking
+- `frontend/src/components/RankingTable.jsx` : colonne Votants
+
+---
+
 ### Session du 5 fevrier 2026 - Logo + Branding
 
 **Logo FOOTVIBES integre** :
