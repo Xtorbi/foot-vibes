@@ -5,6 +5,10 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Vote from './pages/Vote';
 import Ranking from './pages/Ranking';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+import About from './pages/About';
+import Contact from './pages/Contact';
 
 function AppContent() {
   const location = useLocation();
@@ -19,6 +23,10 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/vote" element={<Vote />} />
           <Route path="/classement" element={<Ranking />} />
+          <Route path="/confidentialite" element={<Privacy />} />
+          <Route path="/cgu" element={<Terms />} />
+          <Route path="/a-propos" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>
       {!isVotePage && <Footer />}
