@@ -1,4 +1,4 @@
-# CLAUDE.md - Foot Vibes
+# CLAUDE.md - Golgoat
 
 **Derniere mise a jour** : 6 fevrier 2026
 
@@ -8,13 +8,49 @@
 
 **Statut** : MVP DEPLOYE EN PRODUCTION
 
-Le projet Foot Vibes est une application web de vote emotionnel pour classer les joueurs de Ligue 1. Les utilisateurs votent sur des joueurs (pouce haut / neutre / pouce bas) pour creer un classement communautaire base sur le ressenti des fans.
+**Golgoat** (anciennement Foot Vibes) est le barometre communautaire des joueurs de Ligue 1. Les utilisateurs votent sur des joueurs (pouce haut / neutre / pouce bas) pour creer un classement base sur le ressenti des fans.
 
 ### URLs de production
 
-- **Frontend** : https://frontend-xtorbis-projects.vercel.app
+- **Frontend** : https://frontend-xtorbis-projects.vercel.app (futur: golgoat.fr)
 - **Backend API** : https://foot-vibes-api.onrender.com
 - **GitHub** : https://github.com/Xtorbi/foot-vibes
+
+### Session du 6 fevrier 2026 - Rebranding Golgoat
+
+**Changement de nom** : Foot Vibes → Golgoat (Goal + GOAT)
+
+**Raison** : Le domaine footvibes.fr etait deja pris. Golgoat est plus international et memorable.
+
+**Fichiers modifies** (15 fichiers) :
+- `frontend/index.html` : meta tags, titre
+- `frontend/package.json` : nom du package
+- `frontend/src/components/Footer.jsx` : copyright GOL/GOAT
+- `frontend/src/components/Header.jsx` : alt text logo
+- `frontend/src/components/AdInterstitial.jsx` : texte
+- `frontend/src/pages/Home.jsx` : alt text logo
+- `frontend/src/pages/About.jsx` : texte complet
+- `frontend/src/pages/Contact.jsx` : email contact@golgoat.fr
+- `frontend/src/pages/Privacy.jsx` : texte
+- `frontend/src/pages/Terms.jsx` : texte
+- `frontend/src/index.css` : commentaire
+- `backend/package.json` : nom du package
+- `backend/server.js` : console log
+- `backend/routes/admin.js` : admin key → golgoat-admin-2026
+- `backend/render.yaml` : nom du service
+
+**A faire** :
+- [ ] Generer nouveau logo "GOLGOAT" (remplacer `frontend/public/logo.png`)
+- [ ] Acheter domaine golgoat.fr
+- [ ] Configurer domaine dans Vercel
+- [ ] Mettre a jour vercel.json si rename du service Render
+
+**Prompt logo Ideogram** :
+```
+Logo text "GOLGOAT" in bold condensed sports typography, modern football branding style, emerald green (#10B981) accent color on dark navy (#0f1629) background, clean minimal design, soccer ball integrated subtly into the letter O or G, dynamic energy, no tagline, horizontal layout, vector style, high contrast
+```
+
+---
 
 ### Session du 6 fevrier 2026 - Monetisation AdSense
 
@@ -83,7 +119,7 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 |------|-------|---------|
 | Confidentialite | `/confidentialite` | RGPD, cookies, donnees collectees, droits utilisateurs |
 | CGU | `/cgu` | Regles d'utilisation, votes, propriete intellectuelle |
-| A propos | `/a-propos` | Presentation Foot Vibes, fonctionnement |
+| A propos | `/a-propos` | Presentation Golgoat, fonctionnement |
 | Contact | `/contact` | Formulaire (question, bug, suggestion, RGPD) |
 
 **Fichiers crees** :
