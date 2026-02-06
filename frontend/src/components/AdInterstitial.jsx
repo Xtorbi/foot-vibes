@@ -139,7 +139,7 @@ function AdInterstitial({ isOpen, onClose, slot }) {
             ref={adRef}
             className="adsbygoogle"
             style={{ display: 'block', width: '100%', maxWidth: 728, height: 'auto', minHeight: 250 }}
-            data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+            data-ad-client="ca-pub-5498498962137796"
             data-ad-slot={slot}
             data-ad-format="auto"
             data-full-width-responsive="true"

@@ -107,7 +107,7 @@ function AdBanner({ slot, format = 'banner', className = '' }) {
           width: dimensions.width,
           height: dimensions.height,
         }}
-        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+        data-ad-client="ca-pub-5498498962137796"
         data-ad-slot={slot}
         data-ad-format="auto"
         data-full-width-responsive="true"
