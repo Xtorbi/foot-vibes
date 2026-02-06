@@ -65,8 +65,12 @@ Le projet Foot Vibes est une application web de vote emotionnel pour classer les
 - `frontend/src/pages/Vote.jsx` : AdInterstitial tous les 10 votes
 - `frontend/src/components/RankingTable.jsx` : AdBanner inline tous les 25 joueurs
 
+**Configuration AdSense** :
+- Publisher ID : `ca-pub-5498498962137796` (configure)
+- Slots : placeholders a remplacer par les vrais IDs depuis la console AdSense
+
 **Avant mise en prod** :
-1. Remplacer `ca-pub-XXXXXXXXXXXXXXXX` par le vrai Publisher ID AdSense
+1. ~~Remplacer `ca-pub-XXXXXXXXXXXXXXXX` par le vrai Publisher ID AdSense~~ FAIT
 2. Creer les slots dans la console AdSense et remplacer les placeholders
 3. Passer `DEV_MODE = false` dans AdBanner.jsx et AdInterstitial.jsx
 4. Ajouter banniere cookies RGPD (consentement pub ciblee)
