@@ -40,14 +40,21 @@
 - `backend/render.yaml` : nom du service
 
 **A faire** :
-- [ ] Generer nouveau logo "GOLGOAT" (remplacer `frontend/public/logo.png`)
+- [x] Generer nouveau logo "GOLGOAT" (remplacer `frontend/public/logo.png`) FAIT
 - [ ] Acheter domaine golgoat.fr
 - [ ] Configurer domaine dans Vercel
 - [ ] Mettre a jour vercel.json si rename du service Render
 
-**Prompt logo Ideogram** :
+**Logo Golgoat** :
+- Genere via Ideogram avec fond transparent
+- Typo bold : "GOL" (contour blanc) + "GOAT" (vert #10B981)
+- Icone tete de chevre stylisee en dessous
+- Dimensions : 1556x688 px (ratio horizontal)
+- Fichier : `frontend/public/logo.png`
+
+**Prompt logo Ideogram utilise** :
 ```
-Logo text "GOLGOAT" in bold condensed sports typography, modern football branding style, emerald green (#10B981) accent color on dark navy (#0f1629) background, clean minimal design, soccer ball integrated subtly into the letter O or G, dynamic energy, no tagline, horizontal layout, vector style, high contrast
+Logo "GOLGOAT" ultra bold black weight condensed typography, heavy impactful letterforms, GOL white GOAT emerald green #10B981, stylized goat head icon below, transparent background, PNG format
 ```
 
 ---
