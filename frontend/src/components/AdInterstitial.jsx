@@ -11,7 +11,7 @@ import { useState, useEffect, useRef } from 'react';
  */
 
 // Mode dev : affiche un placeholder visible (mettre à false en prod)
-const DEV_MODE = true;
+const DEV_MODE = false;
 
 function AdInterstitial({ isOpen, onClose, slot }) {
   const [countdown, setCountdown] = useState(5);

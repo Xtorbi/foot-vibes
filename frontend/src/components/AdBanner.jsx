@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from 'react';
  */
 
 // Mode dev : affiche des placeholders visibles (mettre à false en prod)
-const DEV_MODE = true;
+const DEV_MODE = false;
 
 const AD_FORMATS = {
   leaderboard: { width: 728, height: 90, label: 'Leaderboard 728x90' },
