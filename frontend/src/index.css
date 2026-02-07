@@ -554,3 +554,24 @@ button:focus-visible, a:focus-visible {
 .animate-scale-in {
   animation: scaleIn 0.3s ease-out forwards;
 }
+
+/* ===== Accessibilite - Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-vote-bounce,
+  .animate-scale-in,
+  .card-shine::before {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
+  .bg-vibes::before,
+  .bg-vibes::after {
+    animation: none !important;
+  }
+
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}

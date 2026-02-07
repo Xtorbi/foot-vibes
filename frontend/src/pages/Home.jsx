@@ -36,15 +36,15 @@ function Home() {
           <div className="flex gap-3">
             <Link
               to="/classement"
-              className="text-white/70 hover:text-white font-medium text-sm px-4 py-2 rounded-full
-                         border border-white/20 hover:border-white/40 transition-all"
+              className="text-white/70 hover:text-white font-medium text-sm px-5 py-2.5 rounded-full
+                         border border-white/30 hover:border-white/60 transition-all min-h-[44px] flex items-center"
             >
               Classement
             </Link>
             <button
               onClick={handleLigue1}
-              className="bg-fv-green text-fv-navy font-bold text-sm px-4 py-2 rounded-full
-                         hover:bg-fv-green-dark transition-all"
+              className="bg-fv-green text-fv-navy font-bold text-sm px-5 py-2.5 rounded-full
+                         hover:bg-fv-green-dark transition-all min-h-[44px]"
             >
               Voter
             </button>
@@ -60,7 +60,7 @@ function Home() {
             <img
               src="/logo.png"
               alt="Topflop"
-              className="w-40 sm:w-48 md:w-56"
+              className="w-48 sm:w-56 md:w-64"
             />
           </div>
 
@@ -101,7 +101,7 @@ function Home() {
         {/* Séparateur */}
         <div className="flex items-center gap-4 mb-8">
           <div className="flex-1 h-px bg-white/10" />
-          <span className="text-white/40 text-sm font-medium">ou choisis ton club</span>
+          <span className="text-white/60 text-sm font-medium">ou choisis ton club</span>
           <div className="flex-1 h-px bg-white/10" />
         </div>
 
