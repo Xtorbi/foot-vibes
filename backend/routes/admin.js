@@ -17,6 +17,7 @@ const FOOTBALLDATA_TO_DB = {
   'Lille OSC': 'LOSC Lille',
   'OGC Nice': 'OGC Nice',
   'RC Lens': 'RC Lens',
+  'Racing Club de Lens': 'RC Lens',
   'Stade Rennais FC 1901': 'Stade Rennais',
   'Stade Brestois 29': 'Stade Brestois 29',
   'RC Strasbourg Alsace': 'RC Strasbourg Alsace',
