@@ -60,7 +60,7 @@ function Home() {
             <img
               src="/logo.png"
               alt="Topflop"
-              className="w-72 sm:w-96 md:w-[500px]"
+              className="w-40 sm:w-48 md:w-56"
             />
           </div>
 
