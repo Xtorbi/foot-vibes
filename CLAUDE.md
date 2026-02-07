@@ -14,7 +14,7 @@
 
 - **Frontend** : https://frontend-xtorbis-projects.vercel.app (futur: topflop.fr)
 - **Backend API** : https://foot-vibes-api.onrender.com
-- **GitHub** : https://github.com/Xtorbi/foot-vibes
+- **GitHub** : https://github.com/Xtorbi/topflop
 
 ### Session du 6 fevrier 2026 - Rebranding Topflop
 
