@@ -1,6 +1,6 @@
 # CLAUDE.md - Topflop
 
-**Derniere mise a jour** : 6 fevrier 2026
+**Derniere mise a jour** : 7 fevrier 2026
 
 ---
 
@@ -15,6 +15,47 @@
 - **Frontend** : https://frontend-xtorbis-projects.vercel.app (futur: topflop.fr)
 - **Backend API** : https://foot-vibes-api.onrender.com
 - **GitHub** : https://github.com/Xtorbi/topflop
+
+### Session du 7 fevrier 2026 - Logo Topflop + Repo rename
+
+**Repo GitHub renomme** : `foot-vibes` → `topflop`
+- Commande : `gh repo rename topflop --yes`
+- Nouvelle URL : https://github.com/Xtorbi/topflop
+- L'ancienne URL redirige automatiquement
+
+**Nouveau logo Topflop** :
+- Source : `logo6.png` (genere via Ideogram)
+- Style : typo italique sport, pouces haut/bas avec speed lines
+- Pouce haut : blanc avec contour vert
+- Pouce bas : vert plein
+- Texte "TOPFLOP" : blanc avec contour navy
+
+**Traitement du logo (Python/Pillow)** :
+1. Suppression du faux damier transparent (flood fill depuis les coins)
+2. Detection des bordures vertes/navy pour eviter de fuir dans l'interieur du pouce
+3. Erosion des pixels blancs en bordure exterieure (2 passes)
+4. Recadrage serre + resize a 400px de large
+
+**Probleme restant** : Leger lisere blanc visible autour du logo sur fond navy
+- Cause : anti-aliasing de l'image originale Ideogram
+- Solutions possibles :
+  - Regenerer le logo avec fond navy solide dans Ideogram
+  - Utiliser CSS `mix-blend-mode` ou `filter` pour attenuer
+  - Accepter le leger halo (peu visible en pratique)
+
+**Taille logo Home.jsx** : `w-40 sm:w-48 md:w-56` (reduit de w-72/w-96/w-[500px])
+
+**Fichiers logo dans le repo** (non commites, usage local) :
+- `logo5.png` : version avec fond navy rectangulaire
+- `logo6.png` : version retenue (pouce blanc/vert)
+- `logo7.png` : version alternative (pouce tout vert)
+
+**Fichiers modifies** :
+- `frontend/public/logo.png` : nouveau logo traite
+- `frontend/src/pages/Home.jsx` : taille logo reduite
+- `CLAUDE.md` : URL GitHub mise a jour
+
+---
 
 ### Session du 6 fevrier 2026 - Rebranding Topflop
 
