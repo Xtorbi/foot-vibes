@@ -5,7 +5,7 @@ const { runSql } = require('../models/database');
 const { CURRENT_SEASON } = require('../config/clubs');
 
 // Clés secrètes
-const ADMIN_KEY = process.env.ADMIN_KEY || 'goalgot-admin-2026';
+const ADMIN_KEY = process.env.ADMIN_KEY || 'topflop-admin-2026';
 const FOOTBALL_DATA_API_KEY = process.env.FOOTBALL_DATA_API_KEY || 'c3778e56a9194c8cb10b0ed617c86492';
 
 // Mapping Football-Data.org -> nom en BDD

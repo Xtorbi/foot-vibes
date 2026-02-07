@@ -20,7 +20,7 @@ function Privacy() {
             <section>
               <h2 className="text-xl font-semibold text-white mt-8 mb-4">1. Introduction</h2>
               <p>
-                Goalgot est une application web de vote communautaire pour les joueurs de Ligue 1.
+                Topflop est une application web de vote communautaire pour les joueurs de Ligue 1.
                 Nous nous engageons à protéger votre vie privée et à être transparents sur les données que nous collectons.
               </p>
             </section>

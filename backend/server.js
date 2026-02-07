@@ -27,7 +27,7 @@ app.get('/api/health', (req, res) => {
 // Init DB then start server
 initDb().then(() => {
   app.listen(PORT, () => {
-    console.log(`Goalgot API running on port ${PORT}`);
+    console.log(`Topflop API running on port ${PORT}`);
   });
 }).catch(err => {
   console.error('Failed to initialize database:', err);

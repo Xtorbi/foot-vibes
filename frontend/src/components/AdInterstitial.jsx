@@ -150,7 +150,7 @@ function AdInterstitial({ isOpen, onClose, slot }) {
       {/* Footer */}
       <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
         <p className="text-white/20 text-xs">
-          Les pubs nous aident à garder Goalgot gratuit
+          Les pubs nous aident à garder Topflop gratuit
         </p>
       </div>
     </div>

@@ -145,8 +145,8 @@ function Contact() {
               <div className="pt-8 border-t border-white/10">
                 <p className="text-white/60 text-sm">
                   Vous pouvez également nous contacter par email :
-                  <a href="mailto:contact@goalgot.fr" className="text-fv-green hover:underline ml-1">
-                    contact@goalgot.fr
+                  <a href="mailto:contact@topflop.fr" className="text-fv-green hover:underline ml-1">
+                    contact@topflop.fr
                   </a>
                 </p>
               </div>

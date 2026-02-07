@@ -32,7 +32,7 @@ function Home() {
           ${scrolled ? 'translate-y-0' : '-translate-y-full'}`}
       >
         <div className="container mx-auto px-4 flex justify-between items-center max-w-4xl">
-          <img src="/logo.png" alt="Goalgot" className="h-8" />
+          <img src="/logo.png" alt="Topflop" className="h-8" />
           <div className="flex gap-3">
             <Link
               to="/classement"
@@ -55,11 +55,11 @@ function Home() {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Hero Section */}
         <div className="text-center mb-10 animate-fade-in-up">
-          {/* Logo GOALGOT */}
+          {/* Logo TOPFLOP */}
           <div className="flex justify-center mb-6">
             <img
               src="/logo.png"
-              alt="Goalgot"
+              alt="Topflop"
               className="w-72 sm:w-96 md:w-[500px]"
             />
           </div>

@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: goalgot-api
+    name: topflop-api
     runtime: node
     buildCommand: npm install
     startCommand: npm start

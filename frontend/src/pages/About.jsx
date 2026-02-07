@@ -12,14 +12,14 @@ function About() {
         </Link>
 
         <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-          <h1 className="font-heading text-4xl text-white mb-8 tracking-wide">À propos de Goalgot</h1>
+          <h1 className="font-heading text-4xl text-white mb-8 tracking-wide">À propos de Topflop</h1>
 
           <div className="prose prose-invert prose-sm max-w-none space-y-6 text-white/80">
 
             <section>
               <h2 className="text-xl font-semibold text-white mt-8 mb-4">Notre mission</h2>
               <p>
-                Goalgot est le baromètre communautaire des joueurs de Ligue 1. Exprimez votre ressenti
+                Topflop est le baromètre communautaire des joueurs de Ligue 1. Exprimez votre ressenti
                 sur les joueurs : pas de statistiques froides, pas d'algorithmes complexes,
                 juste l'émotion pure des supporters.
               </p>
@@ -68,7 +68,7 @@ function About() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-white mt-8 mb-4">Pourquoi Goalgot ?</h2>
+              <h2 className="text-xl font-semibold text-white mt-8 mb-4">Pourquoi Topflop ?</h2>
               <ul className="list-disc pl-6 space-y-2 mt-3">
                 <li><strong className="text-white">Simple</strong> : Un swipe ou un clic, c'est tout</li>
                 <li><strong className="text-white">Fun</strong> : Pas de prise de tête, juste du feeling</li>

@@ -20,7 +20,7 @@ function Terms() {
             <section>
               <h2 className="text-xl font-semibold text-white mt-8 mb-4">1. Objet</h2>
               <p>
-                Les présentes Conditions Générales d'Utilisation (CGU) régissent l'utilisation du site Goalgot,
+                Les présentes Conditions Générales d'Utilisation (CGU) régissent l'utilisation du site Topflop,
                 une plateforme de vote communautaire permettant aux utilisateurs d'exprimer leur opinion sur les joueurs de Ligue 1.
               </p>
             </section>
@@ -28,7 +28,7 @@ function Terms() {
             <section>
               <h2 className="text-xl font-semibold text-white mt-8 mb-4">2. Accès au service</h2>
               <p>
-                L'accès à Goalgot est gratuit et ouvert à tous. Aucune inscription n'est requise pour voter.
+                L'accès à Topflop est gratuit et ouvert à tous. Aucune inscription n'est requise pour voter.
                 Nous nous réservons le droit de modifier, suspendre ou interrompre le service à tout moment.
               </p>
             </section>
@@ -45,7 +45,7 @@ function Terms() {
 
             <section>
               <h2 className="text-xl font-semibold text-white mt-8 mb-4">4. Comportement des utilisateurs</h2>
-              <p>En utilisant Goalgot, vous vous engagez à :</p>
+              <p>En utilisant Topflop, vous vous engagez à :</p>
               <ul className="list-disc pl-6 space-y-2 mt-3">
                 <li>Ne pas tenter de manipuler les votes ou le classement</li>
                 <li>Ne pas utiliser de bots, scripts ou outils automatisés</li>
@@ -57,7 +57,7 @@ function Terms() {
             <section>
               <h2 className="text-xl font-semibold text-white mt-8 mb-4">5. Propriété intellectuelle</h2>
               <p>
-                Le site Goalgot, son design, son logo et son contenu sont protégés par le droit d'auteur.
+                Le site Topflop, son design, son logo et son contenu sont protégés par le droit d'auteur.
                 Les photos des joueurs et logos des clubs appartiennent à leurs propriétaires respectifs
                 et sont utilisés à des fins informatives.
               </p>
@@ -66,7 +66,7 @@ function Terms() {
             <section>
               <h2 className="text-xl font-semibold text-white mt-8 mb-4">6. Limitation de responsabilité</h2>
               <p>
-                Goalgot est un site de divertissement. Les classements reflètent uniquement l'opinion
+                Topflop est un site de divertissement. Les classements reflètent uniquement l'opinion
                 des utilisateurs et n'ont aucune valeur officielle.
               </p>
               <p className="mt-3">

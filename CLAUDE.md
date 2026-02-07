@@ -1,4 +1,4 @@
-# CLAUDE.md - Goalgot
+# CLAUDE.md - Topflop
 
 **Derniere mise a jour** : 6 fevrier 2026
 
@@ -8,19 +8,19 @@
 
 **Statut** : MVP DEPLOYE EN PRODUCTION
 
-**Goalgot** (anciennement Foot Vibes) est le barometre communautaire des joueurs de Ligue 1. Les utilisateurs votent sur des joueurs (pouce haut / neutre / pouce bas) pour creer un classement base sur le ressenti des fans.
+**Topflop** (anciennement Foot Vibes) est le barometre communautaire des joueurs de Ligue 1. Les utilisateurs votent sur des joueurs (pouce haut / neutre / pouce bas) pour creer un classement base sur le ressenti des fans.
 
 ### URLs de production
 
-- **Frontend** : https://frontend-xtorbis-projects.vercel.app (futur: goalgot.fr)
+- **Frontend** : https://frontend-xtorbis-projects.vercel.app (futur: topflop.fr)
 - **Backend API** : https://foot-vibes-api.onrender.com
 - **GitHub** : https://github.com/Xtorbi/foot-vibes
 
-### Session du 6 fevrier 2026 - Rebranding Goalgot
+### Session du 6 fevrier 2026 - Rebranding Topflop
 
-**Changement de nom** : Foot Vibes → Goalgot (Goal + GOAT)
+**Changement de nom** : Foot Vibes → Topflop (Goal + GOAT)
 
-**Raison** : Le domaine footvibes.fr etait deja pris. Goalgot est plus international et memorable.
+**Raison** : Le domaine footvibes.fr etait deja pris. Topflop est plus international et memorable.
 
 **Fichiers modifies** (15 fichiers) :
 - `frontend/index.html` : meta tags, titre
@@ -30,22 +30,22 @@
 - `frontend/src/components/AdInterstitial.jsx` : texte
 - `frontend/src/pages/Home.jsx` : alt text logo
 - `frontend/src/pages/About.jsx` : texte complet
-- `frontend/src/pages/Contact.jsx` : email contact@goalgot.fr
+- `frontend/src/pages/Contact.jsx` : email contact@topflop.fr
 - `frontend/src/pages/Privacy.jsx` : texte
 - `frontend/src/pages/Terms.jsx` : texte
 - `frontend/src/index.css` : commentaire
 - `backend/package.json` : nom du package
 - `backend/server.js` : console log
-- `backend/routes/admin.js` : admin key → goalgot-admin-2026
+- `backend/routes/admin.js` : admin key → topflop-admin-2026
 - `backend/render.yaml` : nom du service
 
 **A faire** :
-- [x] Generer nouveau logo "GOALGOT" (remplacer `frontend/public/logo.png`) FAIT
-- [ ] Acheter domaine goalgot.fr
+- [x] Generer nouveau logo "TOPFLOP" (remplacer `frontend/public/logo.png`) FAIT
+- [ ] Acheter domaine topflop.fr
 - [ ] Configurer domaine dans Vercel
 - [ ] Mettre a jour vercel.json si rename du service Render
 
-**Logo Goalgot** :
+**Logo Topflop** :
 - Genere via Ideogram avec fond transparent
 - Typo bold : "GOL" (contour blanc) + "GOAT" (vert #10B981)
 - Icone tete de chevre stylisee en dessous
@@ -54,7 +54,7 @@
 
 **Prompt logo Ideogram utilise** :
 ```
-Logo "GOALGOT" ultra bold black weight condensed typography, heavy impactful letterforms, GOL white GOAT emerald green #10B981, stylized goat head icon below, transparent background, PNG format
+Logo "TOPFLOP" ultra bold black weight condensed typography, heavy impactful letterforms, GOL white GOAT emerald green #10B981, stylized goat head icon below, transparent background, PNG format
 ```
 
 ---
@@ -126,7 +126,7 @@ Logo "GOALGOT" ultra bold black weight condensed typography, heavy impactful let
 |------|-------|---------|
 | Confidentialite | `/confidentialite` | RGPD, cookies, donnees collectees, droits utilisateurs |
 | CGU | `/cgu` | Regles d'utilisation, votes, propriete intellectuelle |
-| A propos | `/a-propos` | Presentation Goalgot, fonctionnement |
+| A propos | `/a-propos` | Presentation Topflop, fonctionnement |
 | Contact | `/contact` | Formulaire (question, bug, suggestion, RGPD) |
 
 **Fichiers crees** :
