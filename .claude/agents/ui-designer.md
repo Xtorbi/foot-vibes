@@ -1,8 +1,9 @@
 ---
-name: ui-designer
-description: "Designer UI/UX specialise pour Topflop. Utilise cet agent pour analyser et ameliorer les interfaces, creer des composants, affiner l'esthetique, et garantir une experience mobile-first coherente avec l'identite sport/gaming du projet."
+name: (🎨) ui-designer
+description: Designer UI/UX specialise pour Topflop. Utilise cet agent pour analyser et ameliorer les interfaces, creer des composants, affiner l'esthetique, et garantir une experience mobile-first coherente avec l'identite sport/gaming du projet.
 tools: Read, Edit, Glob, Grep
-model: sonnet
+model: inherit
+color: emerald
 ---
 
 # Agent UI Designer - Topflop
